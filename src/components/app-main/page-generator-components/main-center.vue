@@ -1,74 +1,45 @@
 <template>
   <div class="app-main-center">
-    <ele-form
-      v-model="formData"
-      :form-desc="currentFormDesc"
-      :request-fn="handleSubmit"
-      @request-success="handleSuccess"
-      ref="ele-form"
-      v-bind="currentFormAttr"
+    <draggable
+      :animation="200"
+      v-if="isRenderFinish"
+      :disabled="false"
+      :list="currentPageItemList"
+      @add="handleAdd"
+      @end="handleMoveEnd"
+      @start="handleMoveStart"
+      group="web"
+      tag="el-row"
+      style="padding-bottom: 80px;"
     >
-      <template v-slot:form-content="{ props, formData, formDesc, formErrorObj }">
-        <draggable
-          :animation="200"
-          v-if="isRenderFinish"
-          :disabled="false"
-          :list="currentFormItemList"
-          @add="handleAdd"
-          @end="handleMoveEnd"
-          @start="handleMoveStart"
-          group="form"
-          tag="el-row"
-          style="padding-bottom: 80px;"
-        >
-          <!-- 当为空时 -->
-          <div class="form-area-placeholder" v-if="currentFormItemList.length === 0">从左侧拖拽来添加表单项</div>
-          <template v-else>
-            <h3>{{currentNodeKey.split("&&&&")[0]}}</h3>
-            <h2>{{currentNodeKey.split("&&&&")[1]}}</h2>
-            <template v-for="(formItem, field, index) of formDesc">
-              <el-col
-                :key="field"
-                v-bind="formItem._colAttrs"
-                @click.native="handleFormItemClick(index)"
-                v-if="formItem._vif"
-                class="form-item"
-                :class="{ 'form-item-active': currentFormItemIndex === index }"
-              >
-                <el-form-item
-                  :error="formErrorObj ? formErrorObj[field] : null"
-                  :prop="field"
-                  :label="
-                    props.isShowLabel && formItem.isShowLabel !== false
-                      ? formItem.label
-                      : null
-                  "
-                  :label-width="formItem.labelWidth || null"
-                >
-                  <component
-                    :disabled="props.disabled || formItem._disabled"
-                    :desc="formItem"
-                    :is="formItem._type"
-                    :options="formItem._options"
-                    :ref="field"
-                    :field="field"
-                    v-model="formItem.default"
-                  />
-                  <div class="ele-form-tip" v-if="formItem.tip" v-html="formItem.tip"></div>
-                </el-form-item>
-
-                <!-- 删除按钮 -->
-                <i
-                  @click.stop="handleDelete(index)"
-                  class="el-icon-delete form-item-delete-btn"
-                  v-if="currentFormItemIndex === index"
-                ></i>
-              </el-col>
-            </template>
-          </template>
-        </draggable>
+      <!-- 当为空时 -->
+      <div
+        class="form-area-placeholder"
+        v-if="currentPageItemList.length === 0"
+      >
+        从左侧拖拽来添加表单项{{ JSON.stringify(currentPageItemList) }}
+      </div>
+      <template v-else>
+        <template v-for="(pageItem, index) of currentPageItemList">
+          <el-col
+            :key="pageItem.field"
+            :span="pageItem.left"
+            :style="{ left: pageItem.left + 'px' }"
+            @click="handleFormItemClick(index)"
+            class="ad-image-container"
+            :class="{ 'form-item-active': currentPageItemIndex === index }"
+          >
+            <component :is="pageItem._type" />
+            <!-- 删除按钮 -->
+            <i
+              @click.stop="handleDelete(index)"
+              class="el-icon-delete form-item-delete-btn"
+              v-if="currentPageItemIndex === index"
+            ></i>
+          </el-col>
+        </template>
       </template>
-    </ele-form>
+    </draggable>
   </div>
 </template>
 
@@ -84,7 +55,7 @@ export default {
   },
   computed: {
     ...mapState([
-      "currentFormItemIndex",
+      "currentPageItemIndex",
       "projectList",
       "currentFormIndex",
       "currentProjectIndex"
@@ -92,7 +63,7 @@ export default {
     ...mapGetters([
       "currentFormAttr",
       "currentFormDesc",
-      "currentFormItemList"
+      "currentPageItemList"
     ]),
     // tree key: project 名字 + form 名字
     computedProjectList() {
@@ -186,7 +157,11 @@ export default {
 <style lang="scss">
 .app-main-center {
   padding: 20px;
-
+  .ad-image-container {
+    /* position: absolute; */
+    cursor: move;
+    user-drag: element;
+  }
   /* 当无表单时的占位 */
   .form-area-placeholder {
     width: 100%;

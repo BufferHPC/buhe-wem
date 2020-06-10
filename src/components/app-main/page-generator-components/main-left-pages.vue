@@ -1,33 +1,49 @@
 <template>
   <div class="app-main-left-projects">
     <div class="search-comps">
-      <el-input placeholder="输入关键字查询" v-model="keyword" class="search-input" size="mini"></el-input>
-      <el-button @click="beforeCreateProject" class="create-project-btn" type="mini">新建工程</el-button>
+      <el-input
+        placeholder="输入关键字查询"
+        v-model="keyword"
+        class="search-input"
+        size="mini"
+      ></el-input>
+      <el-button
+        @click="beforeCreateProject"
+        class="create-project-btn"
+        type="mini"
+        >新建工程</el-button
+      >
     </div>
 
     <el-tree
-      :data="computedProjectList"
+      :data="computedPageProjectList"
       default-expand-all
       ref="tree"
       highlight-current
       :current-node-key="currentNodeKey"
       node-key="key"
       :filter-node-method="filterNode"
-      :props="{ children: 'formList', label: 'name' }"
+      :props="{ children: 'pageList', label: 'name' }"
     >
       <span class="custom-tree-node" slot-scope="{ node }">
-        <span class="custom-tree-node-label" @click="handleCommand('select', node)">{{ node.label }}</span>
+        <span
+          class="custom-tree-node-label"
+          @click="handleCommand('select', node)"
+          >{{ node.label }}</span
+        >
         <el-dropdown @command="handleCommand($event, node)">
           <span class="el-dropdown-link">
             <i class="el-icon-more"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-if="node.level === TreeLevel.PROJECT" command="create">新建页面</el-dropdown-item>
+            <el-dropdown-item
+              v-if="node.level === TreeLevel.PROJECT"
+              command="create"
+              >新建页面</el-dropdown-item
+            >
             <el-dropdown-item command="update">编辑名称</el-dropdown-item>
             <el-dropdown-item command="delete" style="color: #F56C6C">
-              删除{{
-              node.level === TreeLevel.PROJECT ? "工程" : "页面"
-              }}
+              删除{{ node.level === TreeLevel.PROJECT ? "工程" : "页面" }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -85,24 +101,31 @@ export default {
     };
   },
   computed: {
-    ...mapState(["projectList", "currentFormIndex", "currentProjectIndex"]),
+    ...mapState([
+      "pageProjectList",
+      "currentPageIndex",
+      "currentPageProjectIndex"
+    ]),
     // tree key: project 名字 + form 名字
-    computedProjectList() {
-      return _.cloneDeep(this.projectList).map(project => {
+    computedPageProjectList() {
+      debugger;
+      return _.cloneDeep(this.pageProjectList).map(project => {
         project.key = project.name;
-        project.formList = project.formList.map(form => {
-          form.key = project.name + "-" + form.name;
-          return form;
+        project.pageList = project.pageList.map(page => {
+          page.key = project.name + "-" + page.name;
+          return page;
         });
         return project;
       });
     },
     // 当前激活的 node 的 key
     currentNodeKey() {
-      if (this.currentFormIndex !== null && this.currentProjectIndex !== null) {
-        return this.computedProjectList[this.currentProjectIndex].formList[
-          this.currentFormIndex
-        ].key;
+      if (
+        this.currentPageIndex !== null &&
+        this.currentPageProjectIndex !== null
+      ) {
+        return this.computedPageProjectList[this.currentPageProjectIndex]
+          .pageList[this.currentPageIndex].key;
       } else {
         return null;
       }
@@ -154,7 +177,7 @@ export default {
     beforeCreateProject() {
       this.editingType = this.EditType.PROJECT;
       this.formDesc = this.baseFormDesc(
-        this.computedProjectList.map(project => project.name)
+        this.computedPageProjectList.map(project => project.name)
       );
       this.formData = {};
       this.isUpdate = false;
@@ -164,7 +187,7 @@ export default {
     handleCommand(command, node) {
       // 获取工程索引
       const getProjectIndexByName = name => {
-        return this.projectList.findIndex(project => project.name === name);
+        return this.pageProjectList.findIndex(project => project.name === name);
       };
       // 判断是否为 PROJECT 相关操作
       if (node.level === this.TreeLevel.PROJECT) {
@@ -191,7 +214,7 @@ export default {
           node.parent.data.name
         );
         // 通过名称获取当前编辑页面索引
-        this.currentEditFormIndex = this.computedProjectList[
+        this.currentEditFormIndex = this.computedPageProjectList[
           this.currentEditProjectIndex
         ].formList.findIndex(form => form.key === node.key);
 
@@ -209,8 +232,8 @@ export default {
             // 选择 当前激活的页面
             // 如果当前即选中的, 则无需选择
             if (
-              this.currentEditProjectIndex === this.currentProjectIndex &&
-              this.currentEditFormIndex === this.currentFormIndex
+              this.currentEditProjectIndex === this.currentPageProjectIndex &&
+              this.currentEditFormIndex === this.currentPageIndex
             ) {
               return;
             }
@@ -227,7 +250,7 @@ export default {
             type: "warning"
           });
           this.$store.commit(
-            "deleteProjectByIndex",
+            "deletePageProjectByIndex",
             this.currentEditProjectIndex
           );
         } catch {
@@ -235,7 +258,7 @@ export default {
         }
       } else {
         this.$store.commit(
-          "deleteProjectByIndex",
+          "deletePageProjectByIndex",
           this.currentEditProjectIndex
         );
       }
@@ -245,10 +268,12 @@ export default {
       this.editingType = this.EditType.PROJECT;
 
       this.formDesc = this.baseFormDesc(
-        this.computedProjectList.map(project => project.name),
+        this.computedPageProjectList.map(project => project.name),
         node.data.name
       );
-      this.formData = this.computedProjectList[this.currentEditProjectIndex];
+      this.formData = this.computedPageProjectList[
+        this.currentEditProjectIndex
+      ];
       this.isShowDialog = true;
     },
     // 创建页面前
@@ -256,7 +281,7 @@ export default {
       this.editingType = this.EditType.FORM;
 
       this.formDesc = this.baseFormDesc(
-        this.computedProjectList[this.currentEditProjectIndex].formList.map(
+        this.computedPageProjectList[this.currentEditProjectIndex].pageList.map(
           form => form.name
         )
       );
@@ -283,24 +308,27 @@ export default {
       this.editingType = this.EditType.FORM;
 
       this.formDesc = this.baseFormDesc(
-        this.computedProjectList[this.currentEditProjectIndex].formList.map(
+        this.computedPageProjectList[this.currentEditProjectIndex].pageList.map(
           form => form.name
         ),
         node.data.name
       );
-      this.formData = this.computedProjectList[
+      this.formData = this.computedPageProjectList[
         this.currentEditProjectIndex
-      ].formList[this.currentEditFormIndex];
+      ].pageList[this.currentEditFormIndex];
       this.isShowDialog = true;
     },
     // 选择页面
     async selectForm() {
       const updateSelect = () => {
-        this.$store.commit("updateProjectIndex", this.currentEditProjectIndex);
-        this.$store.commit("updateFormIndex", this.currentEditFormIndex);
+        this.$store.commit(
+          "updatePageProjectIndex",
+          this.currentEditProjectIndex
+        );
+        this.$store.commit("updatePageIndex", this.currentEditFormIndex);
       };
 
-      if (this.currentFormIndex === null) {
+      if (this.currentPageIndex === null) {
         updateSelect();
       } else {
         try {
@@ -333,12 +361,12 @@ export default {
     },
     // 创建工程
     createProject(data) {
-      this.$store.commit("createProject", data);
+      this.$store.commit("createPageProject", data);
       this.$message.success("新增成功");
     },
     // 更新工程
     updateProject(data) {
-      this.$store.commit("updateProject", {
+      this.$store.commit("updatePageProject", {
         projectIndex: this.currentEditProjectIndex,
         project: data
       });
@@ -353,7 +381,7 @@ export default {
 
     // 创建页面
     createForm(data) {
-      this.$store.commit("createForm", {
+      this.$store.commit("createPage", {
         projectIndex: this.currentEditProjectIndex,
         form: data
       });
@@ -362,7 +390,7 @@ export default {
 
     // 更新页面
     updateForm(data) {
-      this.$store.commit("updateForm", {
+      this.$store.commit("updatePage", {
         projectIndex: this.currentEditProjectIndex,
         formIndex: this.currentEditFormIndex,
         form: data
