@@ -1,7 +1,11 @@
 <template>
   <multipane @paneResizeStop="handlePaneresize" class="app-main">
     <!-- 左侧导航tab选项卡 -->
-    <el-menu @select="handleChangeMenu" :default-active="activeMenu" class="app-menus">
+    <el-menu
+      @select="handleChangeMenu"
+      :default-active="activeMenu"
+      class="app-menus"
+    >
       <div v-for="item of menus" :key="item.componentName" :title="item.title">
         <el-tooltip :content="item.title" placement="right">
           <el-menu-item :index="item.componentName">
@@ -24,7 +28,10 @@
       </transition>
       <!-- 拖拽线的使用 -->
       <transition name="el-fade-in-linear">
-        <multipane-resizer v-show="isShowMenu" key="resizer"></multipane-resizer>
+        <multipane-resizer
+          v-show="isShowMenu"
+          key="resizer"
+        ></multipane-resizer>
       </transition>
       <template v-if="isSelectedForm">
         <!-- 表单详细内容展示部分 -->
@@ -54,7 +61,10 @@
       </transition>
       <!-- 拖拽线的使用 -->
       <transition name="el-fade-in-linear">
-        <multipane-resizer v-show="isShowMenu" key="resizer"></multipane-resizer>
+        <multipane-resizer
+          v-show="isShowMenu"
+          key="resizer"
+        ></multipane-resizer>
       </transition>
       <!-- 页面设计详细内容 -->
       <div class="app-main-container">
@@ -70,8 +80,12 @@
     <template v-if="activeMenu == 'sends'">
       <dl>
         <dt>发布相关设置相关（两层栏目设置）</dt>
-        <dd>第一层栏目树形结构展示，并选择现有系统中需要发布的表单、页面对应的工程或者页面进行发布</dd>
-        <dd>第二层栏目，根据第一层选择的项目，可以选择发布到PC页面、H5页面、公众号或者其他发布渠道，同时可以配置相关的url链接配置等相关</dd>
+        <dd>
+          第一层栏目树形结构展示，并选择现有系统中需要发布的表单、页面对应的工程或者页面进行发布
+        </dd>
+        <dd>
+          第二层栏目，根据第一层选择的项目，可以选择发布到PC页面、H5页面、公众号或者其他发布渠道，同时可以配置相关的url链接配置等相关
+        </dd>
       </dl>
     </template>
 
@@ -80,8 +94,12 @@
       <dl>
         <dt>系统及用户设置相关（两层栏目设置）</dt>
         <dd>第一层栏目，tab选择管理员用户管理或者系统相关配置管理</dd>
-        <dd>第二层栏目，系统管理员相关用户管理，可以进行基础的增删改查常规操作</dd>
-        <dd>第二层栏目，系统配置相关，比如：系统缓存相关配置，可以全域更新相关缓存地址信息，比如多语言支持的程度配置等</dd>
+        <dd>
+          第二层栏目，系统管理员相关用户管理，可以进行基础的增删改查常规操作
+        </dd>
+        <dd>
+          第二层栏目，系统配置相关，比如：系统缓存相关配置，可以全域更新相关缓存地址信息，比如多语言支持的程度配置等
+        </dd>
       </dl>
     </template>
   </multipane>
@@ -130,16 +148,6 @@ export default {
       isShowMenu: true,
       menus: [
         {
-          icon: "el-icon-user-solid",
-          componentName: "customers",
-          title: "全渠道用户信息管理"
-        },
-        {
-          icon: "el-icon-s-marketing",
-          componentName: "cdmp",
-          title: "全渠道用户行为管理"
-        },
-        {
           icon: "el-icon-s-data",
           componentName: "projects",
           title: "表单工程项目管理"
@@ -164,6 +172,16 @@ export default {
           icon: "el-icon-s-promotion",
           componentName: "sends",
           title: "统一发布渠道管理"
+        },
+        {
+          icon: "el-icon-user-solid",
+          componentName: "customers",
+          title: "全渠道用户信息管理"
+        },
+        {
+          icon: "el-icon-s-marketing",
+          componentName: "cdmp",
+          title: "全渠道用户行为管理"
         },
         {
           icon: "el-icon-s-tools",
