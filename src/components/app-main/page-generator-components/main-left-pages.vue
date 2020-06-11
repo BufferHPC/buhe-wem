@@ -108,7 +108,6 @@ export default {
     ]),
     // tree key: project 名字 + form 名字
     computedPageProjectList() {
-      debugger;
       return _.cloneDeep(this.pageProjectList).map(project => {
         project.key = project.name;
         project.pageList = project.pageList.map(page => {
@@ -216,7 +215,7 @@ export default {
         // 通过名称获取当前编辑页面索引
         this.currentEditFormIndex = this.computedPageProjectList[
           this.currentEditProjectIndex
-        ].formList.findIndex(form => form.key === node.key);
+        ].pageList.findIndex(form => form.key === node.key);
 
         switch (command) {
           case "delete":

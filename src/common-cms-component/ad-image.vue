@@ -2,7 +2,7 @@
   <div>
     <img
       class="ad-image"
-      :src="url"
+      src="@/assets/timg.jpg"
       :width="width"
       :height="height"
       alt="demo"
@@ -20,8 +20,7 @@ export default {
     },
     url: {
       type: String,
-      default:
-        "https://www.goodfreephotos.com/cache/people/girls-sitting-on-a-rock-ledge_200_w200_h200_cw200_ch200_thumb.jpg?cached=1589851320"
+      default: "@/assets/timg.jpg"
     },
     width: {
       type: String,
