@@ -20,7 +20,7 @@ export default {
     },
     url: {
       type: String,
-      default: "@/assets/timg.jpg"
+      default: require("@/assets/timg.jpg")
     },
     width: {
       type: String,
