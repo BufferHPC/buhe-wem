@@ -17,19 +17,18 @@
         class="form-area-placeholder"
         v-if="currentPageItemList.length === 0"
       >
-        从左侧拖拽来添加表单项{{ JSON.stringify(currentPageItemList) }}
+        从左侧拖拽来添加表单项
       </div>
       <template v-else>
         <template v-for="(pageItem, index) of currentPageItemList">
           <el-col
             :key="pageItem.field"
-            :span="pageItem.left"
-            :style="{ left: pageItem.left + 'px' }"
-            @click="handleFormItemClick(index)"
+            :span="pageItem.layout"
+            @click.native="handlePageItemClick(index)"
             class="ad-image-container"
             :class="{ 'form-item-active': currentPageItemIndex === index }"
           >
-            <component :is="pageItem._type" />
+            <component :is="pageItem._type" v-bind="pageItem.attrs" />
             <!-- 删除按钮 -->
             <i
               @click.stop="handleDelete(index)"
@@ -53,6 +52,12 @@ export default {
   components: {
     draggable
   },
+  /*  watch:{
+    currentPageItemList(val){
+      console.log(val);
+      debugger
+    }
+  }, */
   computed: {
     ...mapState([
       "currentPageItemIndex",
@@ -61,7 +66,7 @@ export default {
       "currentProjectIndex"
     ]),
     ...mapGetters([
-      "currentFormAttr",
+      "currentPageItemAttrs",
       "currentFormDesc",
       "currentPageItemList"
     ]),
@@ -89,7 +94,6 @@ export default {
   },
   data() {
     return {
-      formData: {},
       isRenderFinish: false
     };
   },
@@ -98,17 +102,18 @@ export default {
     this.$nextTick(() => {
       this.isRenderFinish = true;
     });
-    console.log(this.currentFormItemList);
+    console.log("--------------");
+    console.log(this.currentPageItemList);
   },
   methods: {
     // 通过index删除
     deleteItemByIndex(index) {
-      this.$store.commit("deleteFormItemByIndex", index);
+      this.$store.commit("deletePageItemByIndex", index);
     },
 
     // 通过index更新
     updateSelectIndex(index) {
-      this.$store.commit("updateFormItemIndex", index);
+      this.$store.commit("updatePageItemIndex", index);
     },
     // 删除
     handleDelete(index) {
@@ -116,16 +121,16 @@ export default {
 
       // 因为如果删除最后一个, 界面则无选中效果
       // 所以这里删除最后一个后, 重新选择最后一个
-      if (index >= this.currentFormItemList.length) {
-        this.updateSelectIndex(this.currentFormItemList.length - 1);
+      if (index >= this.currentPageItemList.length) {
+        this.updateSelectIndex(this.currentPageItemList.length - 1);
       }
     },
     // 新增
     handleAdd(res) {
       this.updateSelectIndex(res.newIndex);
       this.$store.commit(
-        "updateCompCount",
-        this.currentFormItemList[res.newIndex].type
+        "updatePageCompCount",
+        this.currentPageItemList[res.newIndex].type
       );
     },
     // 移动开始
@@ -137,18 +142,8 @@ export default {
       this.updateSelectIndex(res.newIndex);
     },
     // 点击选中
-    handleFormItemClick(index) {
+    handlePageItemClick(index) {
       this.updateSelectIndex(index);
-    },
-    // 表单提交
-    handleSubmit(data) {
-      // eslint-disable-next-line no-console
-      console.log(data);
-      return Promise.resolve();
-    },
-    // 请求成功
-    handleSuccess() {
-      this.$message.success("创建成功");
     }
   }
 };

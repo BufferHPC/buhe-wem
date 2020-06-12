@@ -1,10 +1,10 @@
 <template>
   <div>
     <img
-      class="ad-image"
-      src="@/assets/timg.jpg"
-      :width="width"
-      :height="height"
+      class="picture"
+      :src="url"
+      :width="computedPix(width)"
+      :height="computedPix(height)"
       alt="demo"
     />
   </div>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "batchDialog",
+  name: "pureImage",
   props: {
     visible: {
       type: Boolean,
@@ -23,18 +23,22 @@ export default {
       default: require("@/assets/timg.jpg")
     },
     width: {
-      type: String,
-      default: "184px"
+      type: Number,
+      default: 184
     },
     height: {
-      type: String,
-      default: "122px"
+      type: Number,
+      default: 122
     }
   },
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    computedPix(data) {
+      return data + "px";
+    }
+  }
 };
 </script>
 <style lang="scss"></style>

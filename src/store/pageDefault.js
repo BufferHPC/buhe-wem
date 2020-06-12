@@ -1,13 +1,16 @@
 const list = [
   {
     field: "name",
-    type: "adimage",
-    _type: "ad-image",
-    label: "姓名(示例)",
-    layout: 12,
-    left: 12,
-    cssName: "adImage",
-    attrs: {}
+    type: "pureImage",
+    _type: "pure-image",
+    layout: 24,
+    left: 24,
+    cssName: "pureImage",
+    attrs: {
+      height: 122,
+      width: 184,
+      url: require("@/assets/timg.jpg")
+    }
   }
 ];
 

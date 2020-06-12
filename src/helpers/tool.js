@@ -5,6 +5,7 @@
 import _ from "lodash";
 import comps from "./comps";
 import configList from "@/config";
+import pageConfigList from "@/page-config";
 
 /**
  * 修改label => key + label, 同时修改 attrs: { placeholder:  key + label } 更明确告知用户属性名
@@ -60,6 +61,26 @@ export function addFormItem(type, common = {}, attrs) {
         ...attrs,
         ..._.cloneDeep(attrsDefaultData),
         ..._.cloneDeep(attrsData)
+      }
+    }
+  );
+}
+/**
+ * 新增页面元素
+ * @param pageItem 页面元素
+ */
+export function addPageItem(type, common = {}) {
+  common.field = common.field || "key_" + Date.now();
+  console.log(pageConfigList);
+  common._type = pageConfigList[type]._type;
+  return Object.assign(
+    {},
+    {
+      ...common,
+      type,
+      // 组件属性
+      attrs: {
+        ...pageConfigList[type].attrsDefaultData
       }
     }
   );

@@ -1,7 +1,7 @@
-import AdImage from "../common-cms-component/ad-image.vue";
+import pureImage from "../common-cms-component/pure-image.vue";
 const compLists = {
   install: function(Vue) {
-    Vue.component("adImage", AdImage);
+    Vue.component("pureImage", pureImage);
   }
 };
 export default compLists;

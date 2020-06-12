@@ -94,6 +94,10 @@ const store = new Vuex.Store({
     sortedComps(state) {
       return _.cloneDeep(_.sortBy(state.comps, "count")).reverse();
     },
+    // 根据pageitem使用的次数排序
+    sortedPageComps(state) {
+      return _.cloneDeep(_.sortBy(state.pageComps, "count")).reverse();
+    },
     // 当前 project
     currentProject(state) {
       return state.currentProjectIndex !== null
@@ -149,6 +153,34 @@ const store = new Vuex.Store({
         return null;
       }
     },
+    // 过滤掉空值和默认值后的 pageAttr
+    currentPageAttr(state, getters) {
+      if (getters.currentPage) {
+        // 判断是否为空或者是否和默认值相同
+        const isEmptyOrDefaultValue = (val, key) =>
+          _.isNil(val) || val === formAttrDefault[key];
+        return _.omitBy(getters.currentPage.pageAttr, isEmptyOrDefaultValue);
+      } else {
+        return null;
+      }
+    },
+    // 获取页面单项数据
+    currentPageItemAttrs(state) {
+      const {
+        currentPageIndex,
+        currentPageItemIndex,
+        currentPageProjectIndex
+      } = state;
+      if (
+        currentPageIndex !== null &&
+        currentPageItemIndex !== null &&
+        currentPageProjectIndex !== null
+      ) {
+        return state.pageProjectList[currentPageProjectIndex].pageList[
+          currentPageIndex
+        ].pageItemList[currentPageItemIndex].attrs;
+      }
+    },
     // 当前 formItemList
     currentFormItemList(state, getters) {
       return getters.currentForm ? getters.currentForm.formItemList : null;
@@ -162,6 +194,12 @@ const store = new Vuex.Store({
       return getters.currentFormItemList
         ? keyBy(getters.currentFormItemList, "field")
         : null;
+    },
+    // 将数组转为对象
+    currentPageDesc(state, getters) {
+      return getters.currentPageItemList
+        ? keyBy(getters.currentPageItemList, "field")
+        : null;
     }
   },
   mutations: {
@@ -173,6 +211,19 @@ const store = new Vuex.Store({
           state.comps[compIndex],
           "count",
           state.comps[compIndex].count + 1
+        );
+      }
+    },
+    // 更新page组件使用次数
+    updatePageCompCount(state, compType) {
+      const compIndex = state.pageComps.findIndex(
+        item => item.type === compType
+      );
+      if (compIndex > -1) {
+        Vue.set(
+          state.pageComps[compIndex],
+          "count",
+          state.pageComps[compIndex].count + 1
         );
       }
     },
@@ -273,6 +324,12 @@ const store = new Vuex.Store({
       formItemList.splice(index, 1);
       store.commit("updateCurrentForm", { formItemList });
     },
+    // 通过索引删除 pageItem
+    deletePageItemByIndex(state, index) {
+      const pageItemList = _.cloneDeep(store.getters.currentPageItemList);
+      pageItemList.splice(index, 1);
+      store.commit("updateCurrentPage", { pageItemList });
+    },
     // 更新 project
     updateProject(state, { projectIndex, project }) {
       Object.assign(state.projectList[projectIndex], project);
@@ -301,6 +358,15 @@ const store = new Vuex.Store({
         store.commit("updateCurrentForm", { formItemList });
       }
     },
+    // 更新页面单项
+    updateCurrentPageItem(state, item) {
+      const { currentPageItemIndex } = state;
+      if (currentPageItemIndex !== null) {
+        const pageItemList = _.cloneDeep(store.getters.currentPageItemList);
+        pageItemList.splice(currentPageItemIndex, 1, item);
+        store.commit("updateCurrentPage", { pageItemList });
+      }
+    },
     // 更新表单项数据
     updateCurrentItemAttrs(state, attrs) {
       const {
@@ -318,6 +384,24 @@ const store = new Vuex.Store({
         ].formItemList[currentFormItemIndex].attrs = attrs;
       }
     },
+    // 更新页面单项数据
+    updateCurrentPageItemAttrs(state, attrs) {
+      const {
+        currentPageIndex,
+        currentPageItemIndex,
+        currentPageProjectIndex
+      } = state;
+      if (
+        currentPageIndex !== null &&
+        currentPageItemIndex !== null &&
+        currentPageProjectIndex !== null
+      ) {
+        state.pageProjectList[currentPageProjectIndex].pageList[
+          currentPageIndex
+        ].pageItemList[currentPageItemIndex].attrs = attrs;
+      }
+    },
+
     // 更新当前表单
     updateCurrentForm(state, form) {
       if (
@@ -329,6 +413,20 @@ const store = new Vuex.Store({
             state.currentFormIndex
           ],
           form
+        );
+      }
+    },
+    // 更新当前页面
+    updateCurrentPage(state, page) {
+      if (
+        state.currentPageProjectIndex !== null &&
+        state.currentPageIndex !== null
+      ) {
+        Object.assign(
+          state.pageProjectList[state.currentPageProjectIndex].pageList[
+            state.currentPageIndex
+          ],
+          page
         );
       }
     },

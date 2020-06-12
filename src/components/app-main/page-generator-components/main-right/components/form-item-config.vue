@@ -1,14 +1,14 @@
 <template>
   <div>
-    <template v-if="currentFormItem">
+    <template v-if="currentPageItem">
       <attrs-header
         url="https://www.yuque.com/chaojie-vjiel/vbwzgu/iw5dzf"
         title="通用配置"
         v-model="keyword"
       />
       <ele-form
-        :formData="currentFormItem"
-        @input="updateCurrentItem"
+        :formData="currentPageItem"
+        @input="updateCurrentPageItem"
         :formDesc="filterFormDesc"
         :formAttrs="{ size: 'small' }"
         :isShowBackBtn="false"
@@ -19,7 +19,9 @@
       >
         <template v-slot:rules="{ data, desc, field, type }">
           <div style="margin-bottom: 20px">
-            <el-button @click="isShowRuleDialog = true" type="danger">新增校检规则</el-button>
+            <el-button @click="isShowRuleDialog = true" type="danger"
+              >新增校检规则</el-button
+            >
           </div>
           <component
             :desc="desc"
@@ -37,48 +39,22 @@
 </template>
 
 <script>
-import _ from "lodash";
-import configList from "@/config";
+import configList from "@/page-config";
 import { changeFormLabel } from "@/helpers/tool";
-import serialize from "serialize-javascript";
 import searchMixin from "./components/searchMixin";
 import AttrsHeader from "./components/attrs-header.vue";
-import FormItemRules from "./components/form-item-rules.vue";
 import { mapGetters } from "vuex";
 
 export default {
   name: "AppFormItemConfig",
   mixins: [searchMixin],
   components: {
-    AttrsHeader,
-    FormItemRules
+    AttrsHeader
   },
   computed: {
-    ...mapGetters(["currentFormItemList", "currentFormItem"]),
-    countObj() {
-      return _.countBy(this.currentFormItemList, o => o.field);
-    },
+    ...mapGetters(["currentFormItemList", "currentPageItem"]),
     config() {
       return {
-        field: {
-          type: "input",
-          label: "字段名",
-          tip: "字段名不可重复",
-          rules: {
-            type: "string",
-            validator: (rule, value, callback) => {
-              if (this.countObj[value] > 1) {
-                callback("字段名重复");
-              } else {
-                callback();
-              }
-            }
-          }
-        },
-        label: {
-          type: "input",
-          label: "标签"
-        },
         layout: {
           type: "slider",
           label: "宽度",
@@ -93,49 +69,18 @@ export default {
             input: val => {
               // slider组件, 如果传递的value为null或者undefined, 会赋值为 1, 无法利用到默认值, 所以去掉
               if (val !== 1) {
-                this.updateCurrentItem({
-                  ...this.currentFormItem,
+                this.updateCurrentPageItem({
+                  ...this.currentPageItem,
                   layout: val
                 });
               }
             }
           }
-        },
-        default: {
-          type: "input",
-          label: "默认值"
-        },
-        required: {
-          type: "yesno",
-          label: "校检",
-          title: "是否必填"
-        },
-        rules: {
-          type: "textarea",
-          label: "校检规则",
-          title: "新增校检规则",
-          displayFormatter: val => (val ? serialize(val, { space: 2 }) : ""),
-          tip:
-            '校检规则文档, 请<a target="_blank" href="https://www.yuque.com/chaojie-vjiel/vbwzgu/qzzkpd" class="el-link el-link--primary">点击查看</a>'
-        },
-        tip: {
-          type: "input",
-          label: "表单项提示"
-        },
-        isShowLabel: {
-          label: "否显示标签",
-          type: "switch",
-          tip: "与全局isShowLabel作用相同"
-        },
-        labelWidth: {
-          label: "标签宽度",
-          type: "input",
-          tip: "需要以`px`作为单位, 例如`100px`, 默认为全局设置的labelWidth值"
         }
       };
     },
     formDesc() {
-      const customConfig = configList[this.currentFormItem.type].common || {};
+      const customConfig = configList[this.currentPageItem.type].common || {};
       const formDesc = Object.assign({}, this.config, customConfig);
       return changeFormLabel(formDesc);
     }
@@ -156,8 +101,8 @@ export default {
     };
   },
   methods: {
-    updateCurrentItem(data) {
-      this.$store.commit("updateCurrentItem", data);
+    updateCurrentPageItem(data) {
+      this.$store.commit("updateCurrentPageItem", data);
     },
     handleChangeRules(rules) {
       try {

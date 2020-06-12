@@ -4,7 +4,11 @@
       请拖拽组件到右侧配置页面
     </div>
     <div class="app-main-content">
-      <draggable>
+      <draggable
+        :clone="handleAddPageItem"
+        :group="{ name: 'web', pull: 'clone', put: false }"
+        :list="filteredComps"
+      >
         <template v-for="item of filteredComps">
           <div :key="item.type" class="comp-item">
             <div class="comp-item-title">
@@ -20,35 +24,42 @@
 
 <script>
 import draggable from "vuedraggable";
+import { addPageItem } from "@/helpers/tool";
+import { fuzzySearch } from "@/helpers/utils";
+import { mapGetters } from "vuex";
 
 export default {
   name: "AppMainLeftComponents",
   components: {
     draggable
   },
+  computed: {
+    ...mapGetters(["sortedPageComps"]),
+    // 根据搜索词过滤组件
+    filteredComps() {
+      const comps = this.sortedPageComps;
+      const keyword = this.searchValue.toLowerCase();
+      if (!keyword) {
+        return comps;
+      } else {
+        // 匹配，标签 和 type 其一即可
+        return comps.filter(
+          item =>
+            fuzzySearch(item.type, keyword) || fuzzySearch(item.label, keyword)
+        );
+      }
+    }
+  },
   data() {
     return {
-      searchValue: "",
-      filteredComps: [
-        {
-          type: "Text",
-          icon:"el-icon-document",
-          label: "纯文本组件"
-        },{
-          type: "Picture",
-          icon:"el-icon-camera-solid",
-          label: "纯图片组件"
-        },{
-          type: "Video",
-          icon:"el-icon-video-camera-solid",
-          label: "单视频组件"
-        },{
-          type: "TextPicture",
-          icon:"el-icon-picture-outline-round",
-          label: "图文组合组件"
-        }
-      ]
+      searchValue: ""
     };
+  },
+  methods: {
+    // 拖拽后新增表单项
+    handleAddPageItem({ label, type }) {
+      return addPageItem(type, { label });
+    }
   }
 };
 </script>

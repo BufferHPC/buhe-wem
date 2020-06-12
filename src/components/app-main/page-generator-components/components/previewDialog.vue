@@ -6,7 +6,7 @@
     :title="currentNodeKey.split('&&&&')[0]"
     width="90%"
   >
-    <h2 class="dtitle">{{currentNodeKey.split("&&&&")[1]}}</h2>
+    <!-- <h2 class="dtitle">{{currentNodeKey.split("&&&&")[1]}}</h2>
     <ele-form
       :formDesc="computedFormDesc"
       v-model="formData"
@@ -15,7 +15,14 @@
       :request-fn="handleRequest"
       @request-success="handleRequestSuccess"
       v-bind="formAttr"
-    ></ele-form>
+    ></ele-form>-->
+    <el-row :gutter="20">
+      <template v-for="(item, index) of computedPageList">
+        <el-col :key="item.field + index" :span="item.layout">
+          <component :is="item._type" />
+        </el-col>
+      </template>
+    </el-row>
   </el-dialog>
 </template>
 
@@ -30,7 +37,7 @@ export default {
       type: Object,
       default: () => ({})
     },
-    formAttr: {
+    currentPage: {
       type: Object,
       default: () => ({})
     },
@@ -45,31 +52,37 @@ export default {
     };
   },
   computed: {
-    ...mapState(["projectList", "currentFormIndex", "currentProjectIndex"]),
+    ...mapState([
+      "pageProjectList",
+      "currentPageIndex",
+      "currentPageProjectIndex"
+    ]),
     // tree key: project 名字 + form 名字
     computedProjectList() {
-      return _.cloneDeep(this.projectList).map(project => {
+      return _.cloneDeep(this.pageProjectList).map(project => {
         project.key = project.name;
-        project.formList = project.formList.map(form => {
-          form.key = project.name + "&&&&" + form.name;
-          return form;
+        project.pageList = project.pageList.map(page => {
+          page.key = project.name + "&&&&" + page.name;
+          return page;
         });
         return project;
       });
     },
     // 当前激活的 node 的 key
     currentNodeKey() {
-      if (this.currentFormIndex !== null && this.currentProjectIndex !== null) {
-        return this.computedProjectList[this.currentProjectIndex].formList[
-          this.currentFormIndex
+      if (
+        this.currentPageIndex !== null &&
+        this.currentPageProjectIndex !== null
+      ) {
+        return this.computedProjectList[this.currentPageProjectIndex].pageList[
+          this.currentPageIndex
         ].key;
       } else {
         return null;
       }
     },
-    // 需要加一层 clone, 因为 ele-form会修改内部属性
-    computedFormDesc() {
-      return _.cloneDeep(this.formDesc);
+    computedPageList() {
+      return _.cloneDeep(this.currentPage).pageItemList;
     }
   },
   methods: {
