@@ -1,6 +1,12 @@
 <template>
   <div class="picture-wrapper" :style="{ width: computedPix(width, '%') }">
-    <img class="picture" :src="url" width="100%" alt="demo" />
+    <img
+      class="picture"
+      :class="animation"
+      :src="url"
+      width="100%"
+      alt="demo"
+    />
     <div
       class="text-warpper"
       :style="{
@@ -35,6 +41,10 @@ export default {
     text: {
       type: String,
       default: "这是一个图片文本"
+    },
+    animation: {
+      type: String,
+      default: ""
     },
     fontSize: {
       type: String,
@@ -71,6 +81,13 @@ export default {
 .picture-wrapper {
   overflow: hidden;
   position: relative;
+  .picture {
+    box-shadow: 0px 4px 20px 0px rgba(28, 41, 47, 0.16);
+    &.hover-move:hover {
+      transition: all 0.2s linear;
+      transform: translateY(-4px);
+    }
+  }
   .text-warpper {
     width: 15px;
     position: absolute;

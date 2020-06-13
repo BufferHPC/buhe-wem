@@ -14,6 +14,11 @@ const config = {
       },
       tip: "默认值为auto"
     },
+    animation: {
+      type: "select",
+      label: "动画类型",
+      options: [{ text: "默认", value: null }, "hover-move"]
+    },
     text: {
       type: "input",
       label: "文本内容"
@@ -72,6 +77,7 @@ const config = {
     text: "这是一个图片文本",
     fontSize: "12",
     textWidth: "30",
+    animation: "",
     top: "0",
     left: "0",
     fontWeight: "300"

@@ -13,12 +13,18 @@ const config = {
         step: 1
       },
       tip: "默认值为auto"
+    },
+    animation: {
+      type: "select",
+      label: "动画类型",
+      options: [{ text: "默认", value: null }, "hover-move"]
     }
   },
   attrsData: {},
   attrsDefaultData: {
     height: 122,
     width: 100,
+    animation: "",
     url: require("@/assets/timg.jpg")
   },
   common: {},
