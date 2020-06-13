@@ -14,19 +14,19 @@
         width="100%"
         alt="demo"
       />
-      <div
-        class="text-warpper"
-        :style="{
-          width: '100%',
-          top: computedPix(top, '%'),
-          left: computedPix(left, '%'),
-          fontSize: computedPix(fontSize, 'px'),
-          fontWeight: fontWeight,
-          textAlign: textAlign
-        }"
-      >
-        {{ text }}
-      </div>
+    </div>
+    <div
+      class="text-warpper"
+      :style="{
+        width: computedPix(textWidth, 'px'),
+        top: computedPix(top, '%'),
+        left: computedPix(left, '%'),
+        fontSize: computedPix(fontSize, 'px'),
+        fontWeight: fontWeight,
+        textAlign: textAlign
+      }"
+    >
+      {{ text }}
     </div>
   </div>
 </template>
@@ -97,9 +97,15 @@ export default {
 <style lang="scss" scoped>
 .tex-pictrue-wrapper {
   background: #fff;
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
+}
+.text-warpper {
+  width: 15px;
+  position: absolute;
+  top: 0;
 }
 .picture-wrapper {
   overflow: hidden;
@@ -113,11 +119,6 @@ export default {
       transition: all 0.2s linear;
       transform: translateY(-4px);
     }
-  }
-  .text-warpper {
-    width: 15px;
-    position: absolute;
-    top: 0;
   }
 }
 </style>

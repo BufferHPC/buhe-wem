@@ -57,6 +57,15 @@ const config = {
         step: 1
       }
     },
+    textWidth: {
+      type: "input",
+      label: "文本宽度",
+      attrs: {
+        type: "number",
+        min: 1,
+        step: 1
+      }
+    },
     fontSize: {
       type: "input",
       label: "文字大小",
@@ -66,6 +75,7 @@ const config = {
         step: 1
       }
     },
+
     fontWeight: {
       type: "input",
       label: "文字粗细",
