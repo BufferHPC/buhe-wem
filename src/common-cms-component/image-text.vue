@@ -1,5 +1,5 @@
 <template>
-  <div class="tex-pictrue-wrapper">
+  <div class="tex-pictrue-wrapper" :class="animation">
     <div
       class="picture-wrapper"
       :style="{
@@ -7,13 +7,7 @@
         height: computedPix(warpperHeight, 'px')
       }"
     >
-      <img
-        class="picture"
-        :class="animation"
-        :src="url"
-        width="100%"
-        alt="demo"
-      />
+      <img class="picture" :src="url" width="100%" alt="demo" />
     </div>
     <div
       class="text-warpper"
@@ -101,6 +95,11 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
+  box-shadow: 0px 4px 20px 0px rgba(28, 41, 47, 0.16);
+  &.hover-move:hover {
+    transition: all 0.2s linear;
+    transform: translateY(-4px);
+  }
 }
 .text-warpper {
   width: 15px;
@@ -113,12 +112,5 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  .picture {
-    box-shadow: 0px 4px 20px 0px rgba(28, 41, 47, 0.16);
-    &.hover-move:hover {
-      transition: all 0.2s linear;
-      transform: translateY(-4px);
-    }
-  }
 }
 </style>
