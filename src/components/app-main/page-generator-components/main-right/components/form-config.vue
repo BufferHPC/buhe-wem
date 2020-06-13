@@ -15,16 +15,18 @@
       :span="20"
       ref="ele-form"
       labelPosition="top"
-    ></ele-form> -->
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label-width="180px" label="页面背景颜色（默认：白）">
-        <el-input
-          v-model="form.color"
-          @change="updatePageDesc"
-          type="color"
-        ></el-input>
-      </el-form-item>
-    </el-form>
+    ></ele-form>-->
+    <div class="el-row is-justify-center el-row--flex">
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label-width="180px" label="页面背景颜色（默认：白）">
+          <el-input
+            v-model="form.backgroundColor"
+            @change="updatePageDesc"
+            type="color"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -49,18 +51,19 @@ export default {
     }
   },
   methods: {
-    updateFormAttr(data) {
-      this.$store.commit("updateCurrentFormAttr", data);
+    updatePageAttr(data) {
+      this.$store.commit("updateCurrentPageAttr", data);
     },
     updatePageDesc(data) {
       console.log(data);
+      this.$store.commit("updateCurrentPageAttr", { backgroundColor: data });
       // this.$store.commit("updateCurrentFormAttr", data);
     }
   },
   data() {
     return {
       form: {
-        color: "#ffffff"
+        backgroundColor: "#ffffff"
       },
       originDesc: {}
     };

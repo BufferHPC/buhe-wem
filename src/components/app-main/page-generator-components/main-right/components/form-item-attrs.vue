@@ -1,36 +1,40 @@
 <template>
-  <div>
+  <div class="page-attr-config">
     <template v-if="isShow">
       <attrs-header :title="currentPageItem.type + '组件'" v-model="keyword" />
-      <ele-form
-        :formData="currentPageItem.attrs"
-        :formDesc="filterFormDesc"
-        @input="updateFormAttrs"
-        :formAttrs="{ size: 'small' }"
-        :isShowBackBtn="false"
-        :isShowSubmitBtn="false"
-        :span="20"
-        labelPosition="top"
-      />
-      <template v-if="hasUrl">
-        <el-form ref="form" label-position="top" label-width="80px">
-          <el-form-item label-width="180px" label="选择图片">
-            <el-upload
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list="fileList"
-              list-type="picture"
-            >
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">
-                只能上传jpg/png文件，且不超过500kb
-              </div>
-            </el-upload>
-          </el-form-item>
-        </el-form>
-      </template>
+      <div>
+        <ele-form
+          :formData="currentPageItem.attrs"
+          :formDesc="filterFormDesc"
+          @input="updateFormAttrs"
+          :formAttrs="{ size: 'small' }"
+          :isShowBackBtn="false"
+          :isShowSubmitBtn="false"
+          :span="20"
+          labelPosition="top"
+        />
+        <template v-if="hasUrl">
+          <div class="el-row is-justify-center el-row--flex">
+            <el-form ref="form" label-position="top" label-width="80px">
+              <el-form-item label-width="180px" label="选择图片">
+                <el-upload
+                  class="upload-demo"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :on-preview="handlePreview"
+                  :on-remove="handleRemove"
+                  :file-list="fileList"
+                  list-type="picture"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                  <div slot="tip" class="el-upload__tip">
+                    只能上传jpg/png文件，且不超过500kb
+                  </div>
+                </el-upload>
+              </el-form-item>
+            </el-form>
+          </div>
+        </template>
+      </div>
     </template>
     <div class="form-item-placeholder" v-else>从左侧拖拽添加表单项并点选</div>
   </div>
@@ -109,3 +113,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.page-attr-config {
+  height: 100%;
+  overflow: auto;
+}
+</style>

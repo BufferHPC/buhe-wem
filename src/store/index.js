@@ -8,6 +8,7 @@ import { keyBy } from "@/helpers/utils";
 import listDefault from "./listDefault.js";
 import pageDefault from "./pageDefault.js";
 import formAttrDefault from "./formAttrDefault";
+import pageAttrDefault from "./pageAttrDefault";
 import { getFormFromServer } from "@/helpers/api";
 import { getRemoteConfig } from "@/helpers/remoteConfig";
 import createPersistedState from "vuex-persistedstate";
@@ -69,7 +70,7 @@ const store = new Vuex.Store({
             // 表单名称
             name: "柔派首页",
             // 表单属性
-            pageAttr: _.cloneDeep(formAttrDefault),
+            pageAttr: _.cloneDeep(pageAttrDefault),
             // 表单项列表
             pageItemList: pageDefault
           }
@@ -441,6 +442,10 @@ const store = new Vuex.Store({
     // 更新表单属性
     updateCurrentFormAttr(state, formAttr) {
       store.commit("updateCurrentForm", { formAttr });
+    },
+    // 更新表单属性
+    updateCurrentPageAttr(state, pageAttr) {
+      store.commit("updateCurrentPage", { pageAttr });
     },
     // 修改列表
     updateCurrentFormItemList(state, formItemList) {

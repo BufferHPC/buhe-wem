@@ -1,5 +1,8 @@
 <template>
-  <div class="app-main-center">
+  <div
+    class="app-main-center"
+    :style="{ background: computedPageAttr.backgroundColor }"
+  >
     <draggable
       :animation="200"
       v-if="isRenderFinish"
@@ -68,8 +71,12 @@ export default {
     ...mapGetters([
       "currentPageItemAttrs",
       "currentFormDesc",
+      "currentPage",
       "currentPageItemList"
     ]),
+    computedPageAttr() {
+      return this.currentPage.pageAttr;
+    },
     // tree key: project 名字 + form 名字
     computedProjectList() {
       return _.cloneDeep(this.projectList).map(project => {

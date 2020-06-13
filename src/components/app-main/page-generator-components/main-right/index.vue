@@ -39,7 +39,9 @@ export default {
   padding-top: 21px;
   height: 100%;
   background: rgba(14, 35, 54, 0.05);
-
+  .app-main-content {
+    height: 90%;
+  }
   .form-item-placeholder {
     height: 300px;
     line-height: 300px;
