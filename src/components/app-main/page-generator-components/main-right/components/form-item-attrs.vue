@@ -90,13 +90,18 @@ export default {
   },
   methods: {
     mergeData(data, url) {
-      return Object.assign(data, { url: url });
+      return url ? Object.assign(data, { url: url }) : data;
     },
     updateFormAttrs(data) {
       debugger;
+      let url = this.hasUrl
+        ? this.activeUrl
+          ? this.activeUrl
+          : data.url
+        : undefined;
       this.$store.commit(
         "updateCurrentPageItemAttrs",
-        this.mergeData(data, this.activeUrl ? this.activeUrl : data.url)
+        this.mergeData(data, url)
       );
     },
     handleRemove(file, fileList) {

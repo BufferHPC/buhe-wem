@@ -2,7 +2,7 @@
   <div>
     <attrs-header
       url="https://www.yuque.com/chaojie-vjiel/vbwzgu/dyw8a7"
-      title="表单配置"
+      title="页面配置"
       v-model="keyword"
     />
     <!-- <ele-form

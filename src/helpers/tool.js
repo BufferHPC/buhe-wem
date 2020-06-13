@@ -72,6 +72,7 @@ export function addFormItem(type, common = {}, attrs) {
 export function addPageItem(type, common = {}) {
   common.field = common.field || "key_" + Date.now();
   console.log(pageConfigList);
+  debugger;
   common._type = pageConfigList[type]._type;
   return Object.assign(
     {},

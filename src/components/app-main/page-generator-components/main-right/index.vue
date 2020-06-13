@@ -3,7 +3,7 @@
     <el-tabs :stretch="true" v-model="activeTab">
       <el-tab-pane label="组件通用配置" name="item-config"></el-tab-pane>
       <el-tab-pane label="组件属性配置" name="item-attrs"></el-tab-pane>
-      <el-tab-pane label="表单配置" name="form-config"></el-tab-pane>
+      <el-tab-pane label="页面配置" name="form-config"></el-tab-pane>
     </el-tabs>
     <div class="app-main-content">
       <app-form-item-config v-show="activeTab === 'item-config'" />

@@ -30,7 +30,6 @@ export default {
   },
   methods: {
     computedPix(data) {
-      debugger;
       return data + "%";
     }
   }
