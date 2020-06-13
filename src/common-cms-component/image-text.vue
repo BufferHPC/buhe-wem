@@ -1,23 +1,32 @@
 <template>
-  <div class="picture-wrapper" :style="{ width: computedPix(width, '%') }">
-    <img
-      class="picture"
-      :class="animation"
-      :src="url"
-      width="100%"
-      alt="demo"
-    />
+  <div class="tex-pictrue-wrapper">
     <div
-      class="text-warpper"
+      class="picture-wrapper"
       :style="{
-        width: computedPix(textWidth, 'px'),
-        top: computedPix(top, 'px'),
-        left: computedPix(left, 'px'),
-        fontSize: computedPix(fontSize, 'px'),
-        fontWeight: fontWeight
+        width: computedPix(width, '%'),
+        height: computedPix(warpperHeight, 'px')
       }"
     >
-      {{ text }}
+      <img
+        class="picture"
+        :class="animation"
+        :src="url"
+        width="100%"
+        alt="demo"
+      />
+      <div
+        class="text-warpper"
+        :style="{
+          width: '100%',
+          top: computedPix(top, '%'),
+          left: computedPix(left, '%'),
+          fontSize: computedPix(fontSize, 'px'),
+          fontWeight: fontWeight,
+          textAlign: textAlign
+        }"
+      >
+        {{ text }}
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +46,10 @@ export default {
     width: {
       type: Number,
       default: 100
+    },
+    warpperHeight: {
+      type: String,
+      default: "auto"
     },
     text: {
       type: String,
@@ -65,6 +78,10 @@ export default {
     fontWeight: {
       type: String,
       default: "30"
+    },
+    textAlign: {
+      type: String,
+      default: "left"
     }
   },
   data() {
@@ -78,9 +95,18 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.tex-pictrue-wrapper {
+  background: #fff;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 .picture-wrapper {
   overflow: hidden;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   .picture {
     box-shadow: 0px 4px 20px 0px rgba(28, 41, 47, 0.16);
     &.hover-move:hover {

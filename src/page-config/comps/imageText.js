@@ -17,20 +17,27 @@ const config = {
     animation: {
       type: "select",
       label: "动画类型",
-      options: [{ text: "默认", value: null }, "hover-move"]
+      options: [
+        {
+          text: "默认",
+          value: null
+        },
+        "hover-move"
+      ]
+    },
+    warpperHeight: {
+      type: "input",
+      label: "容器高度",
+      attrs: {
+        type: "number",
+        min: 1,
+        step: 1
+      },
+      tip: "默认值为auto"
     },
     text: {
       type: "input",
       label: "文本内容"
-    },
-    textWidth: {
-      type: "input",
-      label: "文本宽度",
-      attrs: {
-        type: "number",
-        min: 30,
-        step: 1
-      }
     },
     top: {
       type: "input",
@@ -68,6 +75,25 @@ const config = {
         max: 900,
         step: 100
       }
+    },
+    textAlign: {
+      type: "radio",
+      default: false,
+      label: "文本位置",
+      options: [
+        {
+          text: "左对齐",
+          value: "left"
+        },
+        {
+          text: "居中对齐",
+          value: "center"
+        },
+        {
+          text: "右对齐",
+          value: "right"
+        }
+      ]
     }
   },
   attrsData: {},
@@ -77,6 +103,8 @@ const config = {
     text: "这是一个图片文本",
     fontSize: "12",
     textWidth: "30",
+    warpperHeight: "auto",
+    textAlign: "left",
     animation: "",
     top: "0",
     left: "0",
