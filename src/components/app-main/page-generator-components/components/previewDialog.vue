@@ -16,28 +16,32 @@
       @request-success="handleRequestSuccess"
       v-bind="formAttr"
     ></ele-form>-->
-    <el-row :gutter="20">
-      <template v-for="(item, index) of computedPageList">
-        <el-col :key="item.field + index" :span="item.layout">
-          <component :is="item._type" />
-        </el-col>
-      </template>
-    </el-row>
+    <div
+      :style="{ background: computedPageAttr.backgroundColor, padding: '20px' }"
+    >
+      <el-row :gutter="20">
+        <template v-for="(item, index) of computedPageList">
+          <el-col
+            class="ad-image-container"
+            :key="item.field + index"
+            :span="item.layout"
+          >
+            <component :is="item._type" v-bind="item.attrs" />
+          </el-col>
+        </template>
+      </el-row>
+    </div>
   </el-dialog>
 </template>
 
 <script>
 import _ from "lodash";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "previewDialog",
   props: {
     formDesc: {
-      type: Object,
-      default: () => ({})
-    },
-    currentPage: {
       type: Object,
       default: () => ({})
     },
@@ -57,6 +61,10 @@ export default {
       "currentPageIndex",
       "currentPageProjectIndex"
     ]),
+    ...mapGetters(["currentPage"]),
+    computedPageAttr() {
+      return this.currentPage.pageAttr;
+    },
     // tree key: project 名字 + form 名字
     computedProjectList() {
       return _.cloneDeep(this.pageProjectList).map(project => {
@@ -98,6 +106,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.ad-image-container {
+  user-drag: element;
+  display: flex;
+  justify-content: center;
+}
 .dtitle {
   text-align: center;
   margin-bottom: 40px;

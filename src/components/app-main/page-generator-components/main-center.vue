@@ -25,6 +25,7 @@
       <template v-else>
         <template v-for="(pageItem, index) of currentPageItemList">
           <el-col
+            :gutter="20"
             :key="pageItem.field"
             :span="pageItem.layout"
             @click.native="handlePageItemClick(index)"
@@ -163,6 +164,8 @@ export default {
     /* position: absolute; */
     cursor: move;
     user-drag: element;
+    display: flex;
+    justify-content: center;
   }
   /* 当无表单时的占位 */
   .form-area-placeholder {

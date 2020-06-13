@@ -79,7 +79,6 @@ export default {
     },
     hasUrl() {
       console.log(this.currentPageItem);
-      debugger;
       return Object.prototype.hasOwnProperty.call(
         this.currentPageItem.attrs,
         "url"
@@ -91,12 +90,13 @@ export default {
   },
   methods: {
     mergeData(data, url) {
-      return Object.assign(this.currentPageItem.attrs, { url: url });
+      return Object.assign(data, { url: url });
     },
     updateFormAttrs(data) {
+      debugger;
       this.$store.commit(
         "updateCurrentPageItemAttrs",
-        this.mergeData(data, this.activeUrl)
+        this.mergeData(data, this.activeUrl ? this.activeUrl : data.url)
       );
     },
     handleRemove(file, fileList) {

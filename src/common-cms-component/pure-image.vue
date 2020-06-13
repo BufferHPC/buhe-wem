@@ -1,12 +1,6 @@
 <template>
-  <div>
-    <img
-      class="picture"
-      :src="url"
-      :width="computedPix(width)"
-      :height="computedPix(height)"
-      alt="demo"
-    />
+  <div class="picture-wrapper" :style="{ width: computedPix(width) }">
+    <img class="picture" :src="url" width="100%" alt="demo" />
   </div>
 </template>
 
@@ -24,7 +18,7 @@ export default {
     },
     width: {
       type: Number,
-      default: 184
+      default: 100
     },
     height: {
       type: Number,
@@ -36,9 +30,14 @@ export default {
   },
   methods: {
     computedPix(data) {
-      return data + "px";
+      debugger;
+      return data + "%";
     }
   }
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.picture-wrapper {
+  overflow: hidden;
+}
+</style>

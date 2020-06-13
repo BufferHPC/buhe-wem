@@ -3,22 +3,13 @@ const config = {
   type: "pureImage",
   _type: "pure-image",
   attrs: {
-    imageWidth: {
+    width: {
       type: "input",
-      label: "图片宽度",
+      label: "图片宽度百分比",
       attrs: {
         type: "number",
-        min: 0,
-        step: 1
-      },
-      tip: "默认值为auto"
-    },
-    imageHeight: {
-      type: "input",
-      label: "图片高度",
-      attrs: {
-        type: "number",
-        min: 0,
+        min: 1,
+        max: 100,
         step: 1
       },
       tip: "默认值为auto"
@@ -27,7 +18,7 @@ const config = {
   attrsData: {},
   attrsDefaultData: {
     height: 122,
-    width: 184,
+    width: 100,
     url: require("@/assets/timg.jpg")
   },
   common: {},
