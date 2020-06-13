@@ -8,7 +8,9 @@
       ref="ele-form"
       v-bind="currentFormAttr"
     >
-      <template v-slot:form-content="{ props, formData, formDesc, formErrorObj }">
+      <template
+        v-slot:form-content="{ props, formData, formDesc, formErrorObj }"
+      >
         <draggable
           :animation="200"
           v-if="isRenderFinish"
@@ -22,10 +24,15 @@
           style="padding-bottom: 80px;"
         >
           <!-- 当为空时 -->
-          <div class="form-area-placeholder" v-if="currentFormItemList.length === 0">从左侧拖拽来添加表单项</div>
+          <div
+            class="form-area-placeholder"
+            v-if="currentFormItemList.length === 0"
+          >
+            从左侧拖拽来添加表单项
+          </div>
           <template v-else>
-            <h3>{{currentNodeKey.split("&&&&")[0]}}</h3>
-            <h2>{{currentNodeKey.split("&&&&")[1]}}</h2>
+            <h3>{{ currentNodeKey.split("&&&&")[0] }}</h3>
+            <h2>{{ currentNodeKey.split("&&&&")[1] }}</h2>
             <template v-for="(formItem, field, index) of formDesc">
               <el-col
                 :key="field"
@@ -54,7 +61,11 @@
                     :field="field"
                     v-model="formItem.default"
                   />
-                  <div class="ele-form-tip" v-if="formItem.tip" v-html="formItem.tip"></div>
+                  <div
+                    class="ele-form-tip"
+                    v-if="formItem.tip"
+                    v-html="formItem.tip"
+                  ></div>
                 </el-form-item>
 
                 <!-- 删除按钮 -->
@@ -183,7 +194,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .app-main-center {
   padding: 20px;
 

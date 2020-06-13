@@ -1,8 +1,18 @@
 <template>
   <div class="app-main-left-projects">
     <div class="search-comps">
-      <el-input placeholder="输入关键字查询" v-model="keyword" class="search-input" size="mini"></el-input>
-      <el-button @click="beforeCreateProject" class="create-project-btn" type="mini">新建工程</el-button>
+      <el-input
+        placeholder="输入关键字查询"
+        v-model="keyword"
+        class="search-input"
+        size="mini"
+      ></el-input>
+      <el-button
+        @click="beforeCreateProject"
+        class="create-project-btn"
+        type="mini"
+        >新建工程</el-button
+      >
     </div>
 
     <el-tree
@@ -16,18 +26,24 @@
       :props="{ children: 'formList', label: 'name' }"
     >
       <span class="custom-tree-node" slot-scope="{ node }">
-        <span class="custom-tree-node-label" @click="handleCommand('select', node)">{{ node.label }}</span>
+        <span
+          class="custom-tree-node-label"
+          @click="handleCommand('select', node)"
+          >{{ node.label }}</span
+        >
         <el-dropdown @command="handleCommand($event, node)">
           <span class="el-dropdown-link">
             <i class="el-icon-more"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-if="node.level === TreeLevel.PROJECT" command="create">新建表单</el-dropdown-item>
+            <el-dropdown-item
+              v-if="node.level === TreeLevel.PROJECT"
+              command="create"
+              >新建表单</el-dropdown-item
+            >
             <el-dropdown-item command="update">编辑名称</el-dropdown-item>
             <el-dropdown-item command="delete" style="color: #F56C6C">
-              删除{{
-              node.level === TreeLevel.PROJECT ? "工程" : "表单"
-              }}
+              删除{{ node.level === TreeLevel.PROJECT ? "工程" : "表单" }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -377,7 +393,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .app-main-left-projects {
   line-height: 1.5em;
   height: 100%;
@@ -396,7 +412,7 @@ export default {
   .el-tree {
     color: #606266;
   }
-  .el-tree-node__content{
+  .el-tree-node__content {
     height: 36px;
   }
   .custom-tree-node {

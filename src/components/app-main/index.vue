@@ -24,6 +24,7 @@
           :style="{ width: leftWidth }"
           key="menu"
           v-show="isShowMenu"
+          class="app-slider-content"
         />
       </transition>
       <!-- 拖拽线的使用 -->
@@ -41,7 +42,7 @@
         </div>
         <multipane-resizer />
         <!-- 表单右侧配置相关部分 -->
-        <form-main-right />
+        <form-main-right class="app-slider-content" />
       </template>
       <template v-else>
         <div class="app-main-container not-selected">请先选择一个表单项目</div>
@@ -78,15 +79,7 @@
 
     <!-- 发布相关设计使用 -->
     <template v-if="activeMenu == 'sends'">
-      <dl>
-        <dt>发布相关设置相关（两层栏目设置）</dt>
-        <dd>
-          第一层栏目树形结构展示，并选择现有系统中需要发布的表单、页面对应的工程或者页面进行发布
-        </dd>
-        <dd>
-          第二层栏目，根据第一层选择的项目，可以选择发布到PC页面、H5页面、公众号或者其他发布渠道，同时可以配置相关的url链接配置等相关
-        </dd>
-      </dl>
+      <send-channel-index />
     </template>
 
     <!-- 系统及用户设置相关 -->
@@ -123,6 +116,9 @@ import PageMainHeader from "./page-generator-components/main-header.vue";
 import PageMainCenter from "./page-generator-components/main-center.vue";
 import PageMainRight from "./page-generator-components/main-right/index.vue";
 
+// 统一渠道发布管理
+import SendChannelIndex from "./send-channel-comments/index.vue";
+
 export default {
   name: "AppMain",
   components: {
@@ -139,7 +135,9 @@ export default {
     PageMainHeader,
     PageMainRight,
     PageMainLeftPages,
-    PageMainLeftPictures
+    PageMainLeftPictures,
+    // 统一渠道发布管理
+    SendChannelIndex
   },
   data() {
     return {
@@ -171,17 +169,17 @@ export default {
         {
           icon: "el-icon-s-promotion",
           componentName: "sends",
-          title: "统一发布渠道管理"
+          title: "渠道发布工程管理"
         },
         {
           icon: "el-icon-user-solid",
           componentName: "customers",
-          title: "全渠道用户信息管理"
+          title: "全渠道大会员信息管理"
         },
         {
           icon: "el-icon-s-marketing",
           componentName: "cdmp",
-          title: "全渠道用户行为管理"
+          title: "大会员数字行为管理"
         },
         {
           icon: "el-icon-s-tools",
@@ -255,6 +253,15 @@ export default {
   }
   .el-menu-item {
     padding: 0 10px;
+  }
+  .app-slider-content {
+    height: 100%;
+    overflow: scroll;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
   }
   .app-main-content {
     height: calc(100% - 60px);

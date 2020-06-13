@@ -3,27 +3,69 @@
     <div class="app-main-header-buttons">
       <div>
         <!-- 顶部按钮 -->
-        <el-button @click="isPreview = true" icon="el-icon-s-platform" type="text">PC预览</el-button>
-        <el-button @click="isH5Preview = true" icon="el-icon-mobile-phone" type="text">H5预览</el-button>
+        <el-button
+          @click="isPreview = true"
+          icon="el-icon-s-platform"
+          type="text"
+          >PC预览</el-button
+        >
+        <el-button
+          @click="isH5Preview = true"
+          icon="el-icon-mobile-phone"
+          type="text"
+          >H5预览</el-button
+        >
         <el-button
           @click="handleSaveData"
           icon="el-icon-upload"
           type="text"
           v-if="saveType === 'remote'"
-        >保存到服务器</el-button>
-        <el-button @click="isShowExportData = true" icon="el-icon-upload2" type="text">生成数据</el-button>
-        <el-button @click="isShowHtmlCode = true" icon="el-icon-tickets" type="text">生成代码</el-button>
-        <el-button @click="isShowImportDialog = true" icon="el-icon-download" type="text">导入数据</el-button>
-        <el-button @click="isShowBatchDialog = true" icon="el-icon-plus" type="text">批量添加</el-button>
-        <el-button @click="clearForm" icon="el-icon-delete" type="text">清空表单</el-button>
+          >保存到服务器</el-button
+        >
+        <el-button
+          @click="isShowExportData = true"
+          icon="el-icon-upload2"
+          type="text"
+          >生成数据</el-button
+        >
+        <el-button
+          @click="isShowHtmlCode = true"
+          icon="el-icon-tickets"
+          type="text"
+          >生成代码</el-button
+        >
+        <el-button
+          @click="isShowImportDialog = true"
+          icon="el-icon-download"
+          type="text"
+          >导入数据</el-button
+        >
+        <el-button
+          @click="isShowBatchDialog = true"
+          icon="el-icon-plus"
+          type="text"
+          >批量添加</el-button
+        >
+        <el-button @click="clearForm" icon="el-icon-delete" type="text"
+          >清空表单</el-button
+        >
       </div>
       <div>
-        <el-button @click="isShowremoteConfig = true" icon="el-icon-setting" type="text">保存设置</el-button>
+        <el-button
+          @click="isShowremoteConfig = true"
+          icon="el-icon-setting"
+          type="text"
+          >保存设置</el-button
+        >
       </div>
     </div>
 
     <!-- PC端预览弹窗 -->
-    <preview-dialog :formDesc="formDesc" :formAttr="currentFormAttr" :visible.sync="isPreview" />
+    <preview-dialog
+      :formDesc="formDesc"
+      :formAttr="currentFormAttr"
+      :visible.sync="isPreview"
+    />
 
     <!-- H5端预览弹窗 -->
     <preview-h5-dialog
@@ -43,7 +85,11 @@
     />
 
     <!-- 生成代码弹框 -->
-    <html-dialog :formDesc="formDesc" :formAttr="currentFormAttr" :visible.sync="isShowHtmlCode" />
+    <html-dialog
+      :formDesc="formDesc"
+      :formAttr="currentFormAttr"
+      :visible.sync="isShowHtmlCode"
+    />
 
     <!-- 批量添加 -->
     <batch-dialog :visible.sync="isShowBatchDialog" />
@@ -158,7 +204,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .app-main-header {
   height: 60px;
   line-height: 60px;
