@@ -12,7 +12,7 @@ const comps = [
     count: 4
   },
   {
-    type: "video",
+    type: "cmsVideo",
     icon: "el-icon-video-camera-solid",
     label: "单视频组件",
     count: 4

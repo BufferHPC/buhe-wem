@@ -17,7 +17,12 @@ import "normalize.css";
 import "element-ui/lib/theme-chalk/index.css";
 
 import components from "@/utils/components.js";
+import "video.js/dist/video-js.css";
 Vue.use(components);
+
+import VideoPlayer from "vue-video-player";
+
+Vue.use(VideoPlayer);
 
 // 插件
 Vue.use(EleForm, {
