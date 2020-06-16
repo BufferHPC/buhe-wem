@@ -1,10 +1,13 @@
 <template>
   <div
+    ref="text"
     class="text-warpper"
     :style="{
       height: computedPix(height),
       fontSize: computedPix(fontSize),
       fontWeight: fontWeight,
+      color: color,
+      marginBottom: computedPix(marginBottom),
       justifyContent: justifyContent
     }"
   >
@@ -24,6 +27,10 @@ export default {
       type: String,
       default: "这是一个纯文本"
     },
+    color: {
+      type: String,
+      default: "#000000"
+    },
     fontSize: {
       type: String,
       default: "12"
@@ -31,6 +38,10 @@ export default {
     height: {
       type: String,
       default: "30"
+    },
+    marginBottom: {
+      type: String,
+      default: "0"
     },
     fontWeight: {
       type: String,
@@ -43,6 +54,10 @@ export default {
   },
   methods: {
     computedPix(data) {
+      // let div = this.$refs.text;
+      // let deviceWidth = parseInt(getComputedStyle(div).width);
+      // let fullScreenWidth = document.body.clientWidth;
+      // return Math.round(data * (deviceWidth / fullScreenWidth)) + "px";
       return data + "px";
     }
   }

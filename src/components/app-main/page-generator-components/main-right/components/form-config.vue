@@ -21,7 +21,22 @@
         <el-form-item label-width="180px" label="页面背景颜色（默认：白）">
           <el-input
             v-model="form.backgroundColor"
-            @change="updatePageDesc"
+            @change="
+              data => {
+                updatePageDesc(data, 'backgroundColor');
+              }
+            "
+            type="color"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label-width="180px" label="删除按钮颜色（默认：黑）">
+          <el-input
+            v-model="form.btnColor"
+            @change="
+              data => {
+                updatePageDesc(data, 'btnColor');
+              }
+            "
             type="color"
           ></el-input>
         </el-form-item>
@@ -54,16 +69,19 @@ export default {
     updatePageAttr(data) {
       this.$store.commit("updateCurrentPageAttr", data);
     },
-    updatePageDesc(data) {
+    updatePageDesc(data, key) {
       console.log(data);
-      this.$store.commit("updateCurrentPageAttr", { backgroundColor: data });
+      let obj = this.form;
+      obj[key] = data;
+      this.$store.commit("updateCurrentPageAttr", obj);
       // this.$store.commit("updateCurrentFormAttr", data);
     }
   },
   data() {
     return {
       form: {
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
+        btnColor: "#000000"
       },
       originDesc: {}
     };

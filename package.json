@@ -16,7 +16,9 @@
     "type": "git",
     "url": "https://github.com/dream2023/vue-ele-form-generator"
   },
-  "dependencies": {},
+  "dependencies": {
+    "vue-video-player": "^5.0.2"
+  },
   "keywords": [
     "vue-ele-form",
     "vue-ele-form-generator",

@@ -13,10 +13,15 @@
           :span="20"
           labelPosition="top"
         />
-        <template v-if="hasUrl">
+        <template>
           <div class="el-row is-justify-center el-row--flex">
-            <el-form ref="form" label-position="top" label-width="80px">
-              <el-form-item label-width="180px" label="选择图片">
+            <el-form
+              class="el-20 el-col-20"
+              ref="form"
+              label-position="top"
+              label-width="80px"
+            >
+              <el-form-item v-if="hasUrl" label-width="180px" label="选择图片">
                 <el-upload
                   class="upload-demo"
                   action="https://jsonplaceholder.typicode.com/posts/"
@@ -30,6 +35,13 @@
                     只能上传jpg/png文件，且不超过500kb
                   </div>
                 </el-upload>
+              </el-form-item>
+              <el-form-item v-if="hasColor" label-width="100%" label="颜色">
+                <el-input
+                  v-model="activeColor"
+                  @change="updatePageItem"
+                  type="color"
+                ></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -54,19 +66,43 @@ export default {
   data() {
     return {
       activeUrl: "",
+      activeColor: "",
       fileList: [
         {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+          name: "summary_1.png",
+          url: require("@/assets/summary1.png")
         },
         {
-          name: "food2.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+          name: "summary_2.png",
+          url: require("@/assets/summary2.jpg")
+        },
+        {
+          name: "summary_3.png",
+          url: require("@/assets/summary3.jpg")
+        },
+        {
+          name: "summary_4.png",
+          url: require("@/assets/summary4.jpg")
+        },
+        {
+          name: "summary_5.gif",
+          url: require("@/assets/summary5.gif")
+        },
+        {
+          name: "summary_6.gif",
+          url: require("@/assets/summary6.gif")
+        },
+        {
+          name: "summary_bg001.jpg",
+          url: require("@/assets/summarybg001.jpg")
         }
       ]
     };
+  },
+  created: function() {
+    this.currentPageItem.attrs.color
+      ? (this.activeColor = this.currentPageItem.attrs.color)
+      : undefined;
   },
   computed: {
     ...mapGetters(["currentPageItem"]),
@@ -84,24 +120,58 @@ export default {
         "url"
       );
     },
+    hasColor() {
+      debugger;
+      return Object.prototype.hasOwnProperty.call(
+        this.currentPageItem.attrs,
+        "color"
+      );
+    },
     isShow() {
       return this.currentPageItem && this.currentPageItem.attrs;
     }
   },
   methods: {
-    mergeData(data, url) {
-      return url ? Object.assign(data, { url: url }) : data;
+    mergeData(data, obj) {
+      return obj ? Object.assign(data, obj) : data;
     },
     updateFormAttrs(data) {
-      debugger;
       let url = this.hasUrl
         ? this.activeUrl
           ? this.activeUrl
           : data.url
         : undefined;
+      let color = this.hasColor
+        ? this.activeColor
+          ? this.activeColor
+          : data.color
+        : undefined;
+      if (url) {
+        this.$store.commit(
+          "updateCurrentPageItemAttrs",
+          this.mergeData(data, { url: url })
+        );
+      }
+      if (color) {
+        this.$store.commit(
+          "updateCurrentPageItemAttrs",
+          this.mergeData(data, { color: color })
+        );
+      }
+      if (!url && !color) {
+        this.$store.commit("updateCurrentPageItemAttrs", data);
+      }
+    },
+    updatePageItem(data) {
+      debugger;
+      let color = this.hasColor
+        ? this.activeColor
+          ? this.activeColor
+          : data
+        : undefined;
       this.$store.commit(
         "updateCurrentPageItemAttrs",
-        this.mergeData(data, url)
+        this.mergeData(this.currentPageItem.attrs, { color: color })
       );
     },
     handleRemove(file, fileList) {
@@ -109,10 +179,10 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
-      this.activeUrl = file.url;
+      let url = (this.activeUrl = file.url);
       this.$store.commit(
         "updateCurrentPageItemAttrs",
-        this.mergeData(this.currentPageItem.attrs, this.activeUrl)
+        this.mergeData(this.currentPageItem.attrs, { url: url })
       );
     }
   }

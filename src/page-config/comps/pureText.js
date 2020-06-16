@@ -16,6 +16,15 @@ const config = {
         step: 1
       }
     },
+    marginBottom: {
+      type: "input",
+      label: "下边距",
+      attrs: {
+        type: "number",
+        min: 0,
+        step: 1
+      }
+    },
     fontSize: {
       type: "input",
       label: "文字大小",
@@ -45,7 +54,7 @@ const config = {
           value: "flex-start"
         },
         {
-          text: "居中对齐",
+          text: "居中",
           value: "center"
         },
         {
@@ -58,8 +67,10 @@ const config = {
   attrsData: {},
   attrsDefaultData: {
     text: "这是一个纯文本",
+    color: "#000000",
     fontSize: "12",
     height: "30",
+    marginBottom: "0",
     fontWeight: "300",
     justifyContent: "flex-start"
   },

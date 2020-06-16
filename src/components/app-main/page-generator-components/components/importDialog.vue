@@ -10,13 +10,19 @@
     <!-- 预览弹窗 -->
     <el-dialog width="90%" :visible.sync="isShowPreview" append-to-body>
       <el-card header="表单预览" shadow="hover" class="box-card">
-        <ele-form
-          :form-desc="formDesc"
-          v-model="formData"
-          :request-fn="handleRequest"
-          @request-success="handleRequestSuccess"
-          v-bind="formAttr"
-        ></ele-form>
+        <div :style="{ background: computedPageAttr.backgroundColor }">
+          <el-row>
+            <template v-for="(item, index) of computedPageList">
+              <el-col
+                class="ad-image-container"
+                :key="item.field + index"
+                :span="item.layout"
+              >
+                <component :is="item._type" v-bind="item.attrs" />
+              </el-col>
+            </template>
+          </el-row>
+        </div>
       </el-card>
       <div slot="footer">
         <el-button @click="isShowPreview = false">返回编辑</el-button>
@@ -29,8 +35,7 @@
       style="margin-bottom: 20px"
       type="warning"
       show-icon
-    >
-    </el-alert>
+    ></el-alert>
 
     <!-- 编辑器 -->
     <codemirror @input="handleChange" v-model="jsonStr"></codemirror>
@@ -45,7 +50,6 @@
 
 <script>
 import _ from "lodash";
-import formAttrDefault from "@/store/formAttrDefault";
 
 export default {
   name: "importDialog",
@@ -74,8 +78,8 @@ export default {
   data() {
     return {
       isShowPreview: false,
-      formDesc: {},
-      formAttr: {},
+      computedPageList: {},
+      computedPageAttr: {},
       jsonData: {},
       jsonStr: "{}",
       isError: false,
@@ -110,38 +114,27 @@ export default {
         return false;
       }
 
-      if (this.jsonData && this.jsonData.formDesc) {
-        const keys = Object.keys(formAttrDefault);
-        this.formAttr = Object.assign(
-          {},
-          formAttrDefault,
-          _.pick(this.jsonData, keys)
-        );
-
+      if (this.jsonData && this.jsonData.pageDesc) {
+        this.computedPageAttr = this.jsonData.pageAttr;
+        this.computedPageList = this.jsonData.pageDesc;
         // 临时预览的 formAttr
         this.isShowPreview = true;
       } else {
-        this.$message.error('数据必须有 "formDesc" 属性！');
+        this.$message.error('数据必须有 "pageDesc" 属性！');
         return false;
       }
     },
     // 处理json数据，将json 映射到操作面板 （list)
     json2Form() {
       // 清空原有list （待优化）
-      this.$store.commit("clearCurrentForm");
+      this.$store.commit("clearCurrentPage");
       // 1.分离 formAttr （表单配置数据）
-      this.$store.commit("updateCurrentFormAttr", this.formAttr);
+      this.$store.commit("updateCurrentPageAttr", this.computedPageAttr);
       // 2.更新 formDesc（组件通用配置数据）
-      // 3.处理 formDesc.attr（组件属性配置数据）
-      const list = Object.entries(this.formDesc).map(([key, val]) => ({
-        ...val,
-        attrs: val.attrs || {},
-        field: key
-      }));
       // 更新 list
-      this.$store.commit("updateCurrentFormItemList", list);
+      this.$store.commit("updateCurrentPageItemList", this.computedPageList);
       // 更新 selectIndex
-      this.$store.commit("updateFormItemIndex", 0);
+      this.$store.commit("updatePageItemIndex", 0);
     },
 
     // 确认生成表单
@@ -160,3 +153,12 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.ad-image-container {
+  /* position: absolute; */
+  cursor: move;
+  user-drag: element;
+  display: flex;
+  justify-content: center;
+}
+</style>

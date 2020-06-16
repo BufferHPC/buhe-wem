@@ -1,5 +1,6 @@
 const formAttrDefault = {
-  backgroundColor: "#ffffff"
+  backgroundColor: "#ffffff",
+  btnColor: "#000000"
 };
 
 export default formAttrDefault;

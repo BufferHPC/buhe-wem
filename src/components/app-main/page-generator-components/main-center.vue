@@ -35,6 +35,7 @@
             <component :is="pageItem._type" v-bind="pageItem.attrs" />
             <!-- 删除按钮 -->
             <i
+              :style="{ color: computedPageAttr.btnColor }"
               @click.stop="handleDelete(index)"
               class="el-icon-delete form-item-delete-btn"
               v-if="currentPageItemIndex === index"

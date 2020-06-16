@@ -293,7 +293,7 @@ export default {
         await this.$confirm("您确定要删除此页面吗?!", "提示", {
           type: "warning"
         });
-        this.$store.commit("deleteFormByIndex", {
+        this.$store.commit("deletePageByIndex", {
           projectIndex: this.currentEditProjectIndex,
           formIndex: this.currentEditFormIndex
         });

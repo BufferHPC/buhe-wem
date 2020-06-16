@@ -1,5 +1,8 @@
 <template>
-  <div class="picture-wrapper" :style="{ width: computedPix(width) }">
+  <div
+    class="picture-wrapper"
+    :style="{ width: computedPix(width, '%'), padding: coputedPadding }"
+  >
     <img
       class="picture"
       :class="animation"
@@ -30,17 +33,29 @@ export default {
       type: Number,
       default: 100
     },
-    height: {
-      type: Number,
-      default: 122
+    paddingT: {
+      type: String,
+      default: "0"
+    },
+    paddingL: {
+      type: String,
+      default: "0"
     }
   },
   data() {
-    return {};
+    return {
+      coputedPaddings: "0"
+    };
+  },
+  computed: {
+    coputedPadding() {
+      debugger;
+      return this.paddingT + "px" + " " + this.paddingL + "px";
+    }
   },
   methods: {
-    computedPix(data) {
-      return data + "%";
+    computedPix(data, sufix) {
+      return data + sufix;
     }
   }
 };

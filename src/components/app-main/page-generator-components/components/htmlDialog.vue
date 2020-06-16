@@ -15,7 +15,7 @@
           :href="fileURL"
           style="color: white;"
           :underline="false"
-          :download="currentForm.name + '.vue'"
+          :download="currentPage.name + '.vue'"
           >下载文件</el-link
         ></el-button
       >
@@ -38,21 +38,21 @@ export default {
       type: Boolean,
       default: false
     },
-    formDesc: {
-      type: Object,
+    pageDesc: {
+      type: Array,
       default: () => ({})
     },
-    formAttr: {
+    pageAttr: {
       type: Object,
       default: () => ({})
     }
   },
   computed: {
-    ...mapGetters(["currentForm"]),
+    ...mapGetters(["currentPage"]),
     // 渲染模板
     codeHtml() {
       // 将  formDesc 转为 字符串
-      const getFormDescStr = formDesc => {
+      const getObjDescStr = formDesc => {
         if (_.isEmpty(formDesc)) return "{}";
 
         return (
@@ -63,21 +63,9 @@ export default {
             .replace(/"(\w+)":/g, "$1:")
         );
       };
-
-      const getFormAttrObj = formAttr => {
-        return Object.entries(formAttr).map(([key, value]) => {
-          // 将 [['name', 'zhang'], ['age', 10]] => [{name: 'zhang', ':age': 10}]
-          // 因为 vue 模板 非字符串前需要加 : 表示变量
-          key = typeof value === "string" ? key : `:${key}`;
-          return {
-            key,
-            value
-          };
-        });
-      };
       return ejs.render(tpl, {
-        formAttr: getFormAttrObj(this.formAttr),
-        formDesc: getFormDescStr(this.formDesc)
+        pageAttr: getObjDescStr(this.pageAttr),
+        pageDesc: getObjDescStr(this.pageDesc)
       });
     },
     fileURL() {

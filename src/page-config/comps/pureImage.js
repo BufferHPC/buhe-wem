@@ -14,6 +14,26 @@ const config = {
       },
       tip: "默认值为auto"
     },
+    paddingT: {
+      type: "input",
+      label: "上下内边距",
+      attrs: {
+        type: "number",
+        min: 0,
+        step: 1
+      },
+      tip: "默认值为auto"
+    },
+    paddingL: {
+      type: "input",
+      label: "左右内边距",
+      attrs: {
+        type: "number",
+        min: 0,
+        step: 1
+      },
+      tip: "默认值为auto"
+    },
     animation: {
       type: "select",
       label: "动画类型",
@@ -22,7 +42,8 @@ const config = {
   },
   attrsData: {},
   attrsDefaultData: {
-    height: 122,
+    paddingT: "0",
+    paddingL: "0",
     width: 100,
     animation: "",
     url: require("@/assets/timg.jpg")

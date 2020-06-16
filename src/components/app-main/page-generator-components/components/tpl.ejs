@@ -1,29 +1,44 @@
 <template>
-  <ele-form<% for(let item of formAttr) { %>
-    <%- item.key %>="<%= item.value %>"<% } %>
-    :formDesc="formDesc"
-    v-model="formData"
-    :request-fn="handleRequest"
-    @request-success="handleRequestSuccess"
-  />
+  <div :style="{ background: pageAttr.backgroundColor }">
+    <el-row>
+      <template for="(pageItem, index) of currentPageItemList">
+        <el-col
+          :key="pageItem.field"
+          :span="pageItem.layout"
+          class="ad-image-container"
+        >
+          <component :is="pageItem._type" v-bind="pageItem.attrs" />
+          <!-- 删除按钮 -->
+          <i :style="{color:computedPageAttr.btnColor}"
+            @click.stop="handleDelete(index)"
+            class="el-icon-delete form-item-delete-btn"
+            v-if="currentPageItemIndex === index"
+          ></i>
+        </el-col>
+      </template>
+    </el-row>
 </template>
+
 
 <script>
 export default {
   data() {
     return {
-      formData: {},
-      formDesc: <%- formDesc %>
+      pageAttr: <%- pageAttr %> ,
+      pageDesc: <%- pageDesc %>
     };
   },
   methods: {
-    handleRequest(data) {
-      console.log(data);
-      return Promise.resolve();
-    },
-    handleRequestSuccess() {
-      this.$message.success("发送成功");
-    }
+    
   }
 };
 </script>
+<style lang="scss" scoped>
+  .ad-image-container {
+    /* position: absolute; */
+    cursor: move;
+    user-drag: element;
+    display: flex;
+    justify-content: center;
+  }
+  </style>

@@ -29,8 +29,12 @@ export default {
       default: false
     },
     formDesc: {
-      type: Object,
+      type: Array,
       default: () => ({})
+    },
+    pageName: {
+      type: String,
+      default: () => ""
     },
     formAttr: {
       type: Object,
@@ -54,9 +58,14 @@ export default {
   },
   computed: {
     codeData() {
-      return Object.assign({}, this.formAttr, {
-        formDesc: this.formDesc
-      });
+      return Object.assign(
+        {},
+        { name: this.pageName },
+        { pageAttr: this.formAttr },
+        {
+          pageDesc: this.formDesc
+        }
+      );
     }
   },
   methods: {

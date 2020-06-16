@@ -275,7 +275,7 @@ const store = new Vuex.Store({
     // 新增 page
     createPage(state, { projectIndex, form }) {
       form.pageItemList = [];
-      form.formAttr = _.cloneDeep(formAttrDefault);
+      form.pageAttr = _.cloneDeep(pageAttrDefault);
       state.pageProjectList[projectIndex].pageList.push(form);
     },
     // 新增 formItem
@@ -318,6 +318,17 @@ const store = new Vuex.Store({
 
       // 删除
       state.projectList[projectIndex].formList.splice(formIndex, 1);
+    },
+    // 通过索引删除 form
+    deletePageByIndex(state, { projectIndex, formIndex }) {
+      // 置空索引
+      if (state.currentPageIndex == formIndex) {
+        state.currentPageIndex = null;
+        state.currentPageItemIndex = null;
+      }
+
+      // 删除
+      state.pageProjectList[projectIndex].pageList.splice(formIndex, 1);
     },
     // 通过索引删除 formItem
     deleteFormItemByIndex(state, index) {
@@ -439,6 +450,14 @@ const store = new Vuex.Store({
       });
       state.currentFormItemIndex = null;
     },
+    // 清空页面
+    clearCurrentPage(state) {
+      store.commit("updateCurrentPage", {
+        pageItemList: [],
+        pageAttr: _.cloneDeep(pageAttrDefault)
+      });
+      state.currentPageItemIndex = null;
+    },
     // 更新表单属性
     updateCurrentFormAttr(state, formAttr) {
       store.commit("updateCurrentForm", { formAttr });
@@ -450,6 +469,10 @@ const store = new Vuex.Store({
     // 修改列表
     updateCurrentFormItemList(state, formItemList) {
       store.commit("updateCurrentForm", { formItemList });
+    },
+    // 修改列表
+    updateCurrentPageItemList(state, pageItemList) {
+      store.commit("updateCurrentPage", { pageItemList });
     },
     // 更新 saveType
     updateSaveType(state, type) {

@@ -61,27 +61,21 @@
       :visible.sync="isPreview"
     />
 
-    <!-- H5端预览弹窗 -->
-    <preview-h5-dialog
-      :formDesc="formDesc"
-      :formAttr="currentFormAttr"
-      :visible.sync="isH5Preview"
-    />
-
     <!-- 导入数据弹框 -->
     <import-dialog :visible.sync="isShowImportDialog" />
 
     <!-- 导出数据弹框 -->
     <export-dialog
-      :formDesc="formDesc"
-      :formAttr="currentFormAttr"
+      :formDesc="currentPage.pageItemList"
+      :formAttr="currentPageAttr"
+      :pageName="currentPage.name"
       :visible.sync="isShowExportData"
     />
 
     <!-- 生成代码弹框 -->
     <html-dialog
-      :formDesc="formDesc"
-      :formAttr="currentFormAttr"
+      :pageDesc="currentPage.pageItemList"
+      :pageAttr="currentPage.pageAttr"
       :visible.sync="isShowHtmlCode"
     />
 
@@ -95,7 +89,7 @@
 
 <script>
 import _ from "lodash";
-import configList from "@/config";
+import configList from "@/page-config";
 import { filterObjByDefault } from "@/helpers/utils";
 import remoteConfig from "./components/remoteConfig.vue";
 import htmlDialog from "./components/htmlDialog.vue";
@@ -104,8 +98,7 @@ import importDialog from "./components/importDialog.vue";
 import exportDialog from "./components/exportDialog.vue";
 // PC端预览
 import previewDialog from "./components/previewDialog.vue";
-// H5端预览
-import previewH5Dialog from "./components/previewH5Dialog.vue";
+
 import { saveFormToServer } from "@/helpers/api";
 import { mapState, mapGetters } from "vuex";
 
@@ -117,35 +110,39 @@ export default {
     batchDialog,
     importDialog,
     exportDialog,
-    previewDialog,
-    previewH5Dialog
+    previewDialog
   },
   computed: {
     ...mapState(["saveType"]),
-    ...mapGetters(["currentPage", "currentFormAttr"]),
+    ...mapGetters([
+      "currentPageDesc",
+      "currentPageAttr",
+      "currentPage",
+      "currentFormAttr"
+    ]),
     formDesc() {
       // 对formDesc每一项进一步处理:
       // 1.删除无用属性 2.自定义formatter函数
-      return _.mapValues(_.cloneDeep(this.currentFormDesc), formItem => {
+      return _.mapValues(_.cloneDeep(this.currentPageDesc), pageItem => {
         const { commonDefaultData, attrsDefaultData, assistProperty, attrs } =
-          configList[formItem.type] || {};
+          configList[pageItem.type] || {};
 
-        formItem = this.processData(formItem, commonDefaultData);
+        pageItem = this.processData(pageItem, commonDefaultData);
 
         // 组件自身属性
-        if (formItem.attrs) {
-          formItem.attrs = this.processData(
-            formItem.attrs,
+        if (pageItem.attrs) {
+          pageItem.attrs = this.processData(
+            pageItem.attrs,
             attrsDefaultData,
             assistProperty,
             attrs
           );
         }
-        if (_.isEmpty(formItem.attrs)) {
-          delete formItem.attrs;
+        if (_.isEmpty(pageItem.attrs)) {
+          delete pageItem.attrs;
         }
 
-        return formItem;
+        return pageItem;
       });
     }
   },
@@ -162,7 +159,7 @@ export default {
   },
   methods: {
     clearForm() {
-      this.$store.commit("clearCurrentForm");
+      this.$store.commit("clearCurrentPage");
     },
 
     // 保存数据
