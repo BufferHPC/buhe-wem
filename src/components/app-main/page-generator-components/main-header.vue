@@ -10,6 +10,12 @@
           >预览</el-button
         >
         <el-button
+          @click="isH5Preview = true"
+          icon="el-icon-mobile-phone"
+          type="text"
+          >H5预览</el-button
+        >
+        <el-button
           @click="handleSaveData"
           icon="el-icon-upload"
           type="text"
@@ -60,7 +66,12 @@
       :formAttr="currentFormAttr"
       :visible.sync="isPreview"
     />
-
+    <!-- H5端预览弹窗 -->
+    <preview-h5-dialog
+      :formDesc="currentPage"
+      :formAttr="currentFormAttr"
+      :visible.sync="isH5Preview"
+    />
     <!-- 导入数据弹框 -->
     <import-dialog :visible.sync="isShowImportDialog" />
 
@@ -98,6 +109,8 @@ import importDialog from "./components/importDialog.vue";
 import exportDialog from "./components/exportDialog.vue";
 // PC端预览
 import previewDialog from "./components/previewDialog.vue";
+// H5端预览
+import previewH5Dialog from "./components/previewH5Dialog.vue";
 
 import { saveFormToServer } from "@/helpers/api";
 import { mapState, mapGetters } from "vuex";
@@ -110,7 +123,8 @@ export default {
     batchDialog,
     importDialog,
     exportDialog,
-    previewDialog
+    previewDialog,
+    previewH5Dialog
   },
   computed: {
     ...mapState(["saveType"]),

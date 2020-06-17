@@ -18,11 +18,16 @@ const comps = [
     count: 4
   },
   {
+    type: "linkVideo",
+    icon: "el-icon-video-camera-solid",
+    label: "链接视频组件",
+    count: 4
+  },
+  {
     type: "imageText",
     icon: "el-icon-picture-outline-round",
     label: "图文组合组件",
     count: 4
   }
 ];
-
 export default comps;

@@ -4,7 +4,7 @@
       <attrs-header :title="currentPageItem.type + '组件'" v-model="keyword" />
       <div>
         <ele-form
-          :formData="currentPageItem.attrs"
+          :formData="computedAttr"
           :formDesc="filterFormDesc"
           @input="updateFormAttrs"
           :formAttrs="{ size: 'small' }"
@@ -85,12 +85,20 @@ export default {
           url: require("@/assets/summary4.jpg")
         },
         {
+          name: "summary_4.png",
+          url: require("@/assets/summary_4.jpg")
+        },
+        {
           name: "summary_5.gif",
           url: require("@/assets/summary5.gif")
         },
         {
           name: "summary_6.gif",
           url: require("@/assets/summary6.gif")
+        },
+        {
+          name: "flex PAI.png",
+          url: require("@/assets/flex PAI.png")
         },
         {
           name: "summary_bg001.jpg",
@@ -100,7 +108,7 @@ export default {
     };
   },
   created: function() {
-    this.currentPageItem.attrs.color
+    this.currentPageItem && this.currentPageItem.attrs.color
       ? (this.activeColor = this.currentPageItem.attrs.color)
       : undefined;
   },
@@ -114,21 +122,26 @@ export default {
       return configList[this.currentPageItem.type];
     },
     hasUrl() {
-      console.log(this.currentPageItem);
-      return Object.prototype.hasOwnProperty.call(
-        this.currentPageItem.attrs,
-        "url"
-      );
+      return this.currentPageItem
+        ? Object.prototype.hasOwnProperty.call(
+            this.currentPageItem.attrs,
+            "url"
+          )
+        : false;
     },
     hasColor() {
-      debugger;
-      return Object.prototype.hasOwnProperty.call(
-        this.currentPageItem.attrs,
-        "color"
-      );
+      return this.currentPageItem
+        ? Object.prototype.hasOwnProperty.call(
+            this.currentPageItem.attrs,
+            "color"
+          )
+        : false;
     },
     isShow() {
       return this.currentPageItem && this.currentPageItem.attrs;
+    },
+    computedAttr() {
+      return this.currentPageItem ? this.currentPageItem.attrs : {};
     }
   },
   methods: {

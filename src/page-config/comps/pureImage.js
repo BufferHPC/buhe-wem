@@ -44,7 +44,7 @@ const config = {
   attrsDefaultData: {
     paddingT: "0",
     paddingL: "0",
-    width: 100,
+    width: "100",
     animation: "",
     url: require("@/assets/timg.jpg")
   },

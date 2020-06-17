@@ -16,6 +16,17 @@ import "@/helpers/api";
 import "normalize.css";
 import "element-ui/lib/theme-chalk/index.css";
 
+//图片懒加载
+import VueLazyload from "vue-lazyload";
+
+Vue.use(VueLazyload);
+
+// or with options
+Vue.use(VueLazyload, {
+  // preLoad: 1.3,
+  attempt: 1
+});
+
 import components from "@/utils/components.js";
 import "video.js/dist/video-js.css";
 Vue.use(components);

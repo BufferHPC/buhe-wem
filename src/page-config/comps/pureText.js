@@ -16,6 +16,15 @@ const config = {
         step: 1
       }
     },
+    lineHeight: {
+      type: "input",
+      label: "文本行高",
+      attrs: {
+        type: "number",
+        min: 30,
+        step: 1
+      }
+    },
     marginBottom: {
       type: "input",
       label: "下边距",
@@ -46,7 +55,7 @@ const config = {
     },
     justifyContent: {
       type: "radio",
-      default: false,
+      default: "flex-start",
       label: "文本位置",
       options: [
         {
@@ -70,6 +79,7 @@ const config = {
     color: "#000000",
     fontSize: "12",
     height: "30",
+    lineHeight: "30",
     marginBottom: "0",
     fontWeight: "300",
     justifyContent: "flex-start"

@@ -23,16 +23,28 @@
         从左侧拖拽来添加表单项
       </div>
       <template v-else>
+        <title>{{ computedPageAttr.seo_title }}</title>
+        <meta name="description" :content="computedPageAttr.seo_desc" />
+        <meta name="Keywords" :content="computedPageAttr.seo_keywords" />
         <template v-for="(pageItem, index) of currentPageItemList">
           <el-col
             :gutter="20"
             :key="pageItem.field"
             :span="pageItem.layout"
-            @click.native="handlePageItemClick(index)"
-            class="ad-image-container"
+            @click.native="
+              e => {
+                handlePageItemClick(e, index);
+              }
+            "
+            class="ad-image-container page-item"
             :class="{ 'form-item-active': currentPageItemIndex === index }"
           >
-            <component :is="pageItem._type" v-bind="pageItem.attrs" />
+            <component
+              :containerWidth="containerWidth"
+              :id="pageItem.field"
+              :is="pageItem._type"
+              v-bind="pageItem.attrs"
+            />
             <!-- 删除按钮 -->
             <i
               :style="{ color: computedPageAttr.btnColor }"
@@ -76,6 +88,12 @@ export default {
       "currentPage",
       "currentPageItemList"
     ]),
+    containerWidth() {
+      return parseInt(
+        getComputedStyle(document.getElementsByClassName("app-main-center")[0])
+          .width
+      );
+    },
     computedPageAttr() {
       return this.currentPage.pageAttr;
     },
@@ -151,7 +169,7 @@ export default {
       this.updateSelectIndex(res.newIndex);
     },
     // 点击选中
-    handlePageItemClick(index) {
+    handlePageItemClick(e, index) {
       this.updateSelectIndex(index);
     }
   }
@@ -168,35 +186,12 @@ export default {
     display: flex;
     justify-content: center;
   }
-  /* 当无表单时的占位 */
-  .form-area-placeholder {
-    width: 100%;
-    height: 300px;
-    line-height: 300px;
-    background-color: white;
-    color: #909399;
-    text-align: center;
-  }
 
-  h3 {
-    margin-bottom: 20px;
-    font-size: 16px;
-    color: #888;
-  }
-  h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: #666;
-  }
   /* 表单项 */
-  .form-item {
-    background: white;
+  .page-item {
     cursor: move;
     position: relative;
     z-index: 1;
-    padding: 0 20px;
-    border: 1px dashed rgba(0, 0, 0, 0);
-
     &-active {
       border: 1px dashed #409eff;
     }

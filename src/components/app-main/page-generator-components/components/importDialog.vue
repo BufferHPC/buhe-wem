@@ -8,7 +8,12 @@
     width="600px"
   >
     <!-- 预览弹窗 -->
-    <el-dialog width="90%" :visible.sync="isShowPreview" append-to-body>
+    <el-dialog
+      ref="dialog"
+      width="90%"
+      :visible.sync="isShowPreview"
+      append-to-body
+    >
       <el-card header="表单预览" shadow="hover" class="box-card">
         <div :style="{ background: computedPageAttr.backgroundColor }">
           <el-row>
@@ -18,7 +23,11 @@
                 :key="item.field + index"
                 :span="item.layout"
               >
-                <component :is="item._type" v-bind="item.attrs" />
+                <component
+                  :containerWidth="containerWidth"
+                  :is="item._type"
+                  v-bind="item.attrs"
+                />
               </el-col>
             </template>
           </el-row>
@@ -73,10 +82,22 @@ export default {
         this.formDesc = {};
         this.jsonStr = "{}";
       }
+    },
+    isShowPreview(val) {
+      if (val) {
+        let fullScreenWidth = document.body.clientWidth;
+        let dialogWidth = this.$refs.dialog.width;
+        if (dialogWidth.indexOf("%") > 0) {
+          this.containerWidth = fullScreenWidth * (parseInt(dialogWidth) / 100);
+        } else {
+          this.containerWidth = parseInt(dialogWidth);
+        }
+      }
     }
   },
   data() {
     return {
+      containerWidth: null,
       isShowPreview: false,
       computedPageList: {},
       computedPageAttr: {},

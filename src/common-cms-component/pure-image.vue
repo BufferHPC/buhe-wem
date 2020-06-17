@@ -6,7 +6,7 @@
     <img
       class="picture"
       :class="animation"
-      :src="url"
+      v-lazy="url"
       width="100%"
       alt="demo"
     />
@@ -30,8 +30,8 @@ export default {
       default: ""
     },
     width: {
-      type: Number,
-      default: 100
+      type: String,
+      default: "100"
     },
     paddingT: {
       type: String,
@@ -49,7 +49,6 @@ export default {
   },
   computed: {
     coputedPadding() {
-      debugger;
       return this.paddingT + "px" + " " + this.paddingL + "px";
     }
   },

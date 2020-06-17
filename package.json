@@ -17,6 +17,7 @@
     "url": "https://github.com/dream2023/vue-ele-form-generator"
   },
   "dependencies": {
+    "vue-lazyload": "^1.3.3",
     "vue-video-player": "^5.0.2"
   },
   "keywords": [

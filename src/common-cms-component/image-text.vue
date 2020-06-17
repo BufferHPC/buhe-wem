@@ -1,27 +1,32 @@
 <template>
-  <div class="tex-pictrue-wrapper" :class="animation">
-    <div
-      class="picture-wrapper"
-      :style="{
-        width: computedPix(width, '%'),
-        height: computedPix(warpperHeight, 'px')
-      }"
-    >
-      <img class="picture" :src="url" width="100%" alt="demo" />
+  <div
+    ref="image_text"
+    class="tex-pictrue-wrapper"
+    :class="animation"
+    :style="{
+      justifyContent: justifyContent,
+      alignItems: alignItem,
+      height: computedPix(warpperHeight, 'px')
+    }"
+  >
+    <div :style="{ width: computedPix(width, '%') }">
+      <img class="picture" v-lazy="url" width="100%" alt="demo" />
     </div>
     <div
+      ref="text"
       class="text-warpper"
+      v-html="text"
       :style="{
         width: computedPix(textWidth, 'px'),
+        lineHeight: computedPix(lineHeight, 'px'),
+        color: color,
         top: computedPix(top, '%'),
         left: computedPix(left, '%'),
         fontSize: computedPix(fontSize, 'px'),
         fontWeight: fontWeight,
         textAlign: textAlign
       }"
-    >
-      {{ text }}
-    </div>
+    ></div>
   </div>
 </template>
 
@@ -33,13 +38,33 @@ export default {
       type: Boolean,
       default: false
     },
+    containerWidth: {
+      type: Number,
+      default: null
+    },
     url: {
       type: String,
       default: require("@/assets/timg.jpg")
     },
     width: {
-      type: Number,
-      default: 100
+      type: String,
+      default: "100"
+    },
+    lineHeight: {
+      type: String,
+      default: "18"
+    },
+    justifyContent: {
+      type: String,
+      default: "flex-start"
+    },
+    alignItem: {
+      type: String,
+      default: "flex-start"
+    },
+    color: {
+      type: String,
+      default: "#000000"
     },
     warpperHeight: {
       type: String,
@@ -81,21 +106,42 @@ export default {
   data() {
     return {};
   },
+  mounted: function() {
+    this.reSizeFont();
+  },
   methods: {
     computedPix(data, sufix) {
       return data + sufix;
+    },
+    reSizeFont() {
+      let div = this.$refs.text;
+      let image = this.$refs.image_text;
+      let fontSize = parseInt(div.style.fontSize);
+      let height = parseInt(image.style.height);
+      let fullScreenWidth = document.body.clientWidth;
+      let containerWidth = this.containerWidth
+        ? this.containerWidth
+        : fullScreenWidth;
+      let scale = containerWidth / fullScreenWidth;
+      div.style.fontSize = Math.round(fontSize * scale) + "px";
+      image.style.height = Math.round(height * scale) + "px";
+      if (containerWidth < 768) {
+        div.style.lineHeight = "16px";
+        image.style.height = "auto";
+      }
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 .tex-pictrue-wrapper {
-  background: #fff;
+  // background: #fff;
   position: relative;
+  overflow: hidden;
   width: 100%;
   display: flex;
   justify-content: center;
-  box-shadow: 0px 4px 20px 0px rgba(28, 41, 47, 0.16);
+  // box-shadow: 0px 4px 20px 0px rgba(28, 41, 47, 0.16);
   &.hover-move:hover {
     transition: all 0.2s linear;
     transform: translateY(-4px);

@@ -97,6 +97,7 @@ const store = new Vuex.Store({
     },
     // 根据pageitem使用的次数排序
     sortedPageComps(state) {
+      debugger;
       return _.cloneDeep(_.sortBy(state.pageComps, "count")).reverse();
     },
     // 当前 project

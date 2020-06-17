@@ -245,7 +245,14 @@ export default {
   }
 };
 </script>
-
+<style lang="scss">
+.multipane {
+  .multipane-resizer,
+  .app-main-right {
+    // z-index: -1;
+  }
+}
+</style>
 <style lang="scss" scoped>
 .app-main {
   height: calc(100vh - 60px);

@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    ref="dialog"
     append-to-body
     :visible="visible"
     @update:visible="$emit('update:visible', $event)"
@@ -26,7 +27,11 @@
             :key="item.field + index"
             :span="item.layout"
           >
-            <component :is="item._type" v-bind="item.attrs" />
+            <component
+              :containerWidth="containerWidth"
+              :is="item._type"
+              v-bind="item.attrs"
+            />
           </el-col>
         </template>
       </el-row>
@@ -50,8 +55,16 @@ export default {
       default: false
     }
   },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.computedWidth();
+      }
+    }
+  },
   data() {
     return {
+      containerWidth: null,
       formData: {}
     };
   },
@@ -94,6 +107,15 @@ export default {
     }
   },
   methods: {
+    computedWidth() {
+      let fullScreenWidth = document.body.clientWidth;
+      let dialogWidth = this.$refs.dialog.width;
+      if (dialogWidth.indexOf("%") > 0) {
+        this.containerWidth = fullScreenWidth * (parseInt(dialogWidth) / 100);
+      } else {
+        this.containerWidth = parseInt(dialogWidth);
+      }
+    },
     handleRequest(data) {
       // eslint-disable-next-line no-console
       console.log(data);
