@@ -3,7 +3,7 @@ module.exports = {
   productionSourceMap: false,
   // 用于测试服务器保存功能
   devServer: {
-    proxy: "http://localhost:8000"
+    // proxy: "http://localhost:8000"
   },
   configureWebpack: {
     output: {

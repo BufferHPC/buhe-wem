@@ -106,6 +106,14 @@ export default {
   data() {
     return {};
   },
+  watch: {
+    fontSize() {
+      this.reSizeFont();
+    },
+    warpperHeight() {
+      this.reSizeFont();
+    }
+  },
   mounted: function() {
     this.reSizeFont();
   },
@@ -114,15 +122,17 @@ export default {
       return data + sufix;
     },
     reSizeFont() {
+      // debugger;
       let div = this.$refs.text;
       let image = this.$refs.image_text;
-      let fontSize = parseInt(div.style.fontSize);
-      let height = parseInt(image.style.height);
+      let fontSize = parseInt(this.fontSize);
+      let height = parseInt(this.warpperHeight);
       let fullScreenWidth = document.body.clientWidth;
       let containerWidth = this.containerWidth
         ? this.containerWidth
         : fullScreenWidth;
       let scale = containerWidth / fullScreenWidth;
+      setTimeout(function() {}, 50);
       div.style.fontSize = Math.round(fontSize * scale) + "px";
       image.style.height = Math.round(height * scale) + "px";
       if (containerWidth < 768) {

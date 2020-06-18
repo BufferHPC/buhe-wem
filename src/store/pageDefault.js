@@ -7,7 +7,7 @@ const list = [
     left: 24,
     cssName: "pureImage",
     attrs: {
-      width: 100,
+      width: "100",
       url: require("@/assets/timg.jpg")
     }
   }

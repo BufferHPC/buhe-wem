@@ -13,7 +13,12 @@
       justifyContent: justifyContent
     }"
   >
-    {{ text }}
+    <template v-if="!this.isLink">
+      {{ text }}
+    </template>
+    <template v-else>
+      <a :href="src">{{ text }}</a>
+    </template>
   </div>
 </template>
 
@@ -22,6 +27,10 @@ export default {
   name: "pureText",
   props: {
     visible: {
+      type: Boolean,
+      default: false
+    },
+    isLink: {
       type: Boolean,
       default: false
     },
@@ -36,6 +45,10 @@ export default {
     id: {
       type: String,
       default: ""
+    },
+    src: {
+      type: String,
+      default: "#"
     },
     color: {
       type: String,
@@ -75,8 +88,8 @@ export default {
     },
     reSizeFont() {
       let div = this.$refs.text;
-      let fontSize = parseInt(div.style.fontSize);
-      let height = parseInt(div.style.height);
+      let fontSize = parseInt(this.fontSize);
+      let height = parseInt(this.height);
       let fullScreenWidth = document.body.clientWidth;
       let containerWidth = this.containerWidth
         ? this.containerWidth
@@ -98,5 +111,9 @@ export default {
   display: flex;
   width: 100%;
   align-items: center;
+  a {
+    text-decoration: none;
+    color: #0899dd;
+  }
 }
 </style>

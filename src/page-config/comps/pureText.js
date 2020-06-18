@@ -7,6 +7,20 @@ const config = {
       type: "input",
       label: "文本内容"
     },
+    isLink: {
+      type: "radio",
+      default: false,
+      label: "是否为链接",
+      options: [
+        { text: "是", value: true },
+        { text: "否", value: false }
+      ]
+    },
+    src: {
+      type: "input",
+      vif: data => data.isLink,
+      label: "链接地址"
+    },
     height: {
       type: "input",
       label: "文本容器高度",
@@ -77,6 +91,8 @@ const config = {
   attrsDefaultData: {
     text: "这是一个纯文本",
     color: "#000000",
+    isLink: false,
+    src: "#",
     fontSize: "12",
     height: "30",
     lineHeight: "30",
